@@ -28,14 +28,14 @@ export class ApiService {
   }
 
   static async getAllFlowerGroups() {
-    return this.request<IGroupCard[]>("api/FlowerGroup/get-all-flower-groups")
+    return this.request<IGroupCard[]>("/api/FlowerGroup/get-all-flower-groups")
   }
 
   static async getFlowersByGroup(groupId: string) {
-    return this.request<IFlower[]>(`api/FlowerGroup/get-flowers-by-flower-group/${groupId}`)
+    return this.request<IFlower[]>(`/api/FlowerGroup/get-flowers-by-flower-group/${groupId}`)
   }
   static async getFlowerById(groupId: string) {
-    return this.request<IFlower>(`api/Flower/get-flower-by-id/${groupId}`)
+    return this.request<IFlower>(`/api/Flower/get-flower-by-id/${groupId}`)
   }
 
   static async filterFlowers(params: IFilterParams) {
