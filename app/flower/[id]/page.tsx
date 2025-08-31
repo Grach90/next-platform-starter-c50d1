@@ -1,69 +1,85 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useParams, useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ArrowLeft, ShoppingBag, Loader2 } from "lucide-react"
-import { toast } from "sonner"
-import type { IFlower, IFlowerOptions, IBasketItem } from "@/lib/types"
-import { BOUQUET_SIZE_NAMES, BOUQUET_TYPE_NAMES, FLOWER_COLOR_NAMES, FLOWER_KIND_NAMES } from "@/lib/constants"
-import { ImageCarousel } from "@/components/image-carousel"
-import { useBasket } from "@/contexts/basket-context"
-import { ApiService } from "@/lib/api"
-import { LanguageSwitcher } from "@/components/language-switcher"
-import { BasketButton } from "@/components/basket-button"
-import { useLanguage } from "@/contexts/language-context"
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ArrowLeft, ShoppingBag, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import type { IFlower, IFlowerOptions, IBasketItem } from "@/lib/types";
+import {
+  BOUQUET_SIZE_NAMES,
+  BOUQUET_TYPE_NAMES,
+  FLOWER_COLOR_NAMES,
+  FLOWER_KIND_NAMES,
+} from "@/lib/constants";
+import { ImageCarousel } from "@/components/image-carousel";
+import { useBasket } from "@/contexts/basket-context";
+import { ApiService } from "@/lib/api";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { BasketButton } from "@/components/basket-button";
+import { useLanguage } from "@/contexts/language-context";
 
-const getFlowerById = async (id: string): Promise<IFlower> => {
-  const result = await ApiService.getFlowerById(id)
+const getFlowerById = async (
+  id: string,
+  currentLanguage: string
+): Promise<IFlower> => {
+  const result = await ApiService.getFlowerById(id, currentLanguage);
   if (!result) {
-    throw new Error("Flower not found")
+    throw new Error("Flower not found");
   }
-  return result
-}
+  return result;
+};
 
 export default function FlowerDetailPage() {
-  const params = useParams()
-  const router = useRouter()
-  const [flower, setFlower] = useState<IFlower | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [selectedOption, setSelectedOption] = useState<IFlowerOptions | null>(null)
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0)
-  const [carouselOpen, setCarouselOpen] = useState(false)
-  const { addItem } = useBasket()
-  const { t } = useLanguage()
+  const params = useParams();
+  const router = useRouter();
+  const [flower, setFlower] = useState<IFlower | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<IFlowerOptions | null>(
+    null
+  );
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [carouselOpen, setCarouselOpen] = useState(false);
+  const { addItem } = useBasket();
+  const { t, currentLanguage } = useLanguage();
 
   useEffect(() => {
-    loadFlower()
-  }, [params.id])
+    loadFlower();
+  }, [params.id, currentLanguage]);
 
   const loadFlower = async () => {
     try {
-      setLoading(true)
-      const result = await getFlowerById(params.id as string)
-      setFlower(result)
-      setSelectedOption(result.flowerOptions[0])
+      setLoading(true);
+      const result = await getFlowerById(params.id as string, currentLanguage);
+      setFlower(result);
+      setSelectedOption(result.flowerOptions[0]);
     } catch (err) {
-      setError("Failed to load flower details")
-      console.error("Error loading flower:", err)
+      setError("Failed to load flower details");
+      console.error("Error loading flower:", err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleSizeChange = (optionId: string) => {
-    const option = flower?.flowerOptions.find((opt) => opt.id === optionId)
+    const option = flower?.flowerOptions.find((opt) => opt.id === optionId);
     if (option) {
-      setSelectedOption(option)
-      setSelectedImageIndex(0) // Reset to first image when size changes
+      setSelectedOption(option);
+      setSelectedImageIndex(0); // Reset to first image when size changes
     }
-  }
+  };
 
   const handleAddToBasket = () => {
-    if (!flower || !selectedOption) return
+    if (!flower || !selectedOption) return;
 
     const basketItem: IBasketItem = {
       flowerId: flower.id,
@@ -72,25 +88,29 @@ export default function FlowerDetailPage() {
       price: selectedOption.price,
       imageLink: selectedOption.imageLinks[0],
       quantity: 1,
-    }
+    };
 
-    addItem(basketItem)
+    addItem(basketItem);
 
     toast.success(`${flower.name} added to basket!`, {
-      description: `${t("flower.size")}: ${BOUQUET_SIZE_NAMES[selectedOption.size as keyof typeof BOUQUET_SIZE_NAMES]} - $${selectedOption.price}`,
-    })
-  }
+      description: `${t("flower.size")}: ${
+        BOUQUET_SIZE_NAMES[
+          selectedOption.size as keyof typeof BOUQUET_SIZE_NAMES
+        ]
+      } - $${selectedOption.price}`,
+    });
+  };
 
   const handleBackClick = () => {
-    router.back()
-  }
+    router.back();
+  };
 
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
-    )
+    );
   }
 
   if (error || !flower) {
@@ -99,7 +119,7 @@ export default function FlowerDetailPage() {
         <p className="text-destructive mb-4">{error || "Flower not found"}</p>
         <Button onClick={handleBackClick}>Go Back</Button>
       </div>
-    )
+    );
   }
 
   return (
@@ -127,7 +147,10 @@ export default function FlowerDetailPage() {
             {/* Main Image */}
             <div className="aspect-square overflow-hidden rounded-lg bg-muted">
               <img
-                src={selectedOption?.imageLinks[selectedImageIndex] || "/placeholder.svg"}
+                src={
+                  selectedOption?.imageLinks[selectedImageIndex] ||
+                  "/placeholder.svg"
+                }
                 alt={flower.name}
                 className="h-full w-full cursor-pointer object-cover transition-transform hover:scale-105"
                 onClick={() => setCarouselOpen(true)}
@@ -141,7 +164,9 @@ export default function FlowerDetailPage() {
                   key={index}
                   onClick={() => setSelectedImageIndex(index)}
                   className={`flex-shrink-0 overflow-hidden rounded-lg border-2 transition-colors ${
-                    selectedImageIndex === index ? "border-accent" : "border-transparent"
+                    selectedImageIndex === index
+                      ? "border-accent"
+                      : "border-transparent"
                   }`}
                 >
                   <img
@@ -157,21 +182,34 @@ export default function FlowerDetailPage() {
           {/* Details Section */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">{flower.name}</h1>
-              <p className="text-2xl font-bold text-accent mt-2">${selectedOption?.price}</p>
+              <h1 className="text-3xl font-bold text-foreground">
+                {flower.name}
+              </h1>
+              <p className="text-2xl font-bold text-accent mt-2">
+                ${selectedOption?.price}
+              </p>
             </div>
 
             {/* Size Selector */}
             <div>
-              <label className="text-sm font-medium text-foreground mb-2 block">{t("flower.size")}</label>
-              <Select value={selectedOption?.id || ""} onValueChange={handleSizeChange}>
+              <label className="text-sm font-medium text-foreground mb-2 block">
+                {t("flower.size")}
+              </label>
+              <Select
+                value={selectedOption?.id || ""}
+                onValueChange={handleSizeChange}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select size" />
                 </SelectTrigger>
                 <SelectContent>
-                  {flower.flowerOptions.map((option,i) => (
+                  {flower.flowerOptions.map((option, i) => (
                     <SelectItem key={i} value={option.id}>
-                      {BOUQUET_SIZE_NAMES[option.size as keyof typeof BOUQUET_SIZE_NAMES]}
+                      {
+                        BOUQUET_SIZE_NAMES[
+                          option.size as keyof typeof BOUQUET_SIZE_NAMES
+                        ]
+                      }
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -180,25 +218,43 @@ export default function FlowerDetailPage() {
 
             {/* Description */}
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">{t("flower.description")}</h3>
-              <p className="text-muted-foreground leading-relaxed">{flower.description}</p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">
+                {t("flower.description")}
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                {flower.description || "-"}
+              </p>
             </div>
 
             {/* Bouquet Type */}
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">{t("flower.bouquet_type")}</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-2">
+                {t("flower.bouquet_type")}
+              </h3>
               <Badge variant="secondary" className="text-sm">
-                {BOUQUET_TYPE_NAMES[flower.bouqetType as keyof typeof BOUQUET_TYPE_NAMES]}
+                {
+                  BOUQUET_TYPE_NAMES[
+                    flower.bouqetType as keyof typeof BOUQUET_TYPE_NAMES
+                  ]
+                }
               </Badge>
             </div>
 
             {/* Colors */}
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">{t("flower.available_colors")}</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-2">
+                {t("flower.available_colors")}
+              </h3>
               <div className="flex flex-wrap gap-2">
-                {flower.flowerColors.map((color,i) => (
+                {flower.flowerColors.map((color, i) => (
                   <Badge key={i} variant="outline" className="text-sm">
-                    {FLOWER_COLOR_NAMES[color as keyof typeof FLOWER_COLOR_NAMES]}
+                    {t(
+                      `filter.clear.${
+                        FLOWER_COLOR_NAMES[
+                          color as keyof typeof FLOWER_COLOR_NAMES
+                        ]
+                      }`
+                    )}
                   </Badge>
                 ))}
               </div>
@@ -206,11 +262,19 @@ export default function FlowerDetailPage() {
 
             {/* Flower Types */}
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">{t("flower.flower_types")}</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-2">
+                {t("flower.flower_types")}
+              </h3>
               <div className="flex flex-wrap gap-2">
-                {flower.flowerKinds.map((kind,i) => (
+                {flower.flowerKinds.map((kind, i) => (
                   <Badge key={i} variant="outline" className="text-sm">
-                    {FLOWER_KIND_NAMES[kind as keyof typeof FLOWER_KIND_NAMES]}
+                    {t(
+                      `filter.kind.${
+                        FLOWER_KIND_NAMES[
+                          kind as keyof typeof FLOWER_KIND_NAMES
+                        ]
+                      }`
+                    )}
                   </Badge>
                 ))}
               </div>
@@ -240,5 +304,5 @@ export default function FlowerDetailPage() {
         />
       )}
     </div>
-  )
+  );
 }

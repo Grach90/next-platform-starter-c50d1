@@ -1,17 +1,19 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { createContext, useContext, useState, useEffect } from "react"
-import { ELanguage } from "@/lib/types"
+import type React from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import { ELanguage } from "@/lib/types";
 
 interface LanguageContextType {
-  currentLanguage: ELanguage
-  setLanguage: (language: ELanguage) => Promise<void>
-  translations: Record<string, string>
-  t: (key: string, fallback?: string) => string
+  currentLanguage: ELanguage;
+  setLanguage: (language: ELanguage) => Promise<void>;
+  translations: Record<string, string>;
+  t: (key: string, fallback?: string) => string;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
+const LanguageContext = createContext<LanguageContextType | undefined>(
+  undefined
+);
 
 // Mock translations - in a real app, these would come from the API
 const mockTranslations = {
@@ -29,11 +31,29 @@ const mockTranslations = {
     "filter.flower_types": "Flower Types",
     "filter.search": "Search",
     "filter.clear": "Clear",
+    "filter.clear.Blue": "Blue",
+    "filter.clear.Fuchsia": "Fuchsia",
+    "filter.clear.Green": "Green",
+    "filter.clear.Peach": "Peach",
+    "filter.clear.Pink": "Pink",
+    "filter.clear.Red": "Red",
+    "filter.clear.Violet": "Violet",
+    "filter.clear.White": "White",
+    "filter.clear.Yellow": "Yellow",
+    "filter.kind.Rose": "Rose",
+    "filter.kind.Hydrangea": "Hydrangea",
+    "filter.kind.Peony": "Peony",
+    "filter.kind.Tanacetum": "Tanacetum",
+    "filter.kind.Spray Roses": "Spray Roses",
+    "filter.kind.French Roses": "French Roses",
+    "filter.kind.Eustoma": "Eustoma",
+    "filter.kind.Delphinium": "Delphinium",
+    "filter.kind.Tulips": "Tulips",
+    "filter.kind.Ranunculus": "Ranunculus",
     "groups.title": "Flower Collections",
     "groups.subtitle": "Explore our curated flower groups",
     "about.title": "About Us",
-    "about.description":
-      `Luxe Rose Dubai is the art of floral storytelling — refined over three years of passion, precision, and creativity in the world of luxury blooms.
+    "about.description": `Luxe Rose Dubai is the art of floral storytelling — refined over three years of passion, precision, and creativity in the world of luxury blooms.
 
 We proudly collaborate with beloved brands, top companies, and lifestyle influencers to create more than just bouquets —
 we craft unforgettable floral moments.
@@ -44,8 +64,7 @@ Each arrangement is a blend of style, attention to detail, and the genuine desir
 
 Here, you're not just buying flowers. You're gifting emotion — and doing it beautifully.`,
     "delivery.title": "Delivery",
-    "delivery.description":
-      `At Luxe Rose Dubai, we understand how important it is for your flowers to arrive on time — every time.
+    "delivery.description": `At Luxe Rose Dubai, we understand how important it is for your flowers to arrive on time — every time.
 Our standard delivery across Dubai takes 1–2 hours, depending on traffic, and we always strive to make it as fast and seamless as possible.
 
 Planning ahead? Simply choose your preferred time slot when placing your order, and we’ll ensure your bouquet arrives right on schedule — beautifully fresh and exactly when you want it.
@@ -58,13 +77,16 @@ Scheduled Delivery: Choose a time in advance — we guarantee on-time arrival.
 Other Emirates (Abu Dhabi, Sharjah, Deira, etc.): Rates vary and are calculated individually.
 
 Need help? Our team is always available on WhatsApp to answer questions and assist with your order — quickly and personally`,
-"payment.title":"Payment",
-"payment.description":"At Luxe Rose Dubai, your comfort comes first — that’s why we offer a full range of payment options to suit your lifestyle. Whether you prefer digital, mobile, or traditional methods, we make it simple and seamless:",    
-"payment.ApplePay":"Apple Pay — quick and effortless",
-"payment.Paymentlink":"Payment link — perfect when you’re on the go",
-"payment.Banktransfers":"Bank transfers — available for clients in Russia, the UAE, and Armenia",
-"payment.USDT":"USDT (crypto) — ideal for those who prefer digital finance",
-"footer.contact": "Contact Us",
+    "payment.title": "Payment",
+    "payment.description":
+      "At Luxe Rose Dubai, your comfort comes first — that’s why we offer a full range of payment options to suit your lifestyle. Whether you prefer digital, mobile, or traditional methods, we make it simple and seamless:",
+    "payment.ApplePay": "Apple Pay — quick and effortless",
+    "payment.Paymentlink": "Payment link — perfect when you’re on the go",
+    "payment.Banktransfers":
+      "Bank transfers — available for clients in Russia, the UAE, and Armenia",
+    "payment.USDT":
+      "USDT (crypto) — ideal for those who prefer digital finance",
+    "footer.contact": "Contact Us",
     "footer.follow": "Follow Us",
     "footer.visit": "Visit Our Store",
     "basket.title": "Your Basket",
@@ -102,11 +124,29 @@ Need help? Our team is always available on WhatsApp to answer questions and assi
     "filter.flower_types": "Типы цветов",
     "filter.search": "Поиск",
     "filter.clear": "Очистить",
+    "filter.clear.Blue": "Синий",
+    "filter.clear.Fuchsia": "Фуксия",
+    "filter.clear.Green": "Зеленый",
+    "filter.clear.Peach": "Персиковый",
+    "filter.clear.Pink": "Розовый",
+    "filter.clear.Red": "Красный",
+    "filter.clear.Violet": "Фиолетовый",
+    "filter.clear.White": "Белый",
+    "filter.clear.Yellow": "Желтый",
+    "filter.kind.Rose": "Роза",
+    "filter.kind.Hydrangea": "Гортензия",
+    "filter.kind.Peony": "Пион",
+    "filter.kind.Tanacetum": "Танацетум",
+    "filter.kind.Spray Roses": "Кустовые розы",
+    "filter.kind.French Roses": "Французские розы",
+    "filter.kind.Eustoma": "Эустома",
+    "filter.kind.Delphinium": "Дельфиниум",
+    "filter.kind.Tulips": "Тюльпаны",
+    "filter.kind.Ranunculus": "Ранункулюсы",
     "groups.title": "Коллекции цветов",
     "groups.subtitle": "Изучите наши тщательно подобранные группы цветов",
     "about.title": "О нас",
-    "about.description":
-      `Luxe Rose Dubai — это три года мастерства и вдохновения в мире люксовых цветов.
+    "about.description": `Luxe Rose Dubai — это три года мастерства и вдохновения в мире люксовых цветов.
 Мы сотрудничаем с любимыми брендами, компаниями и блогерами, создавая не просто букеты — а запоминающиеся впечатления. Каждая наша композиция — это стиль, внимание к деталям и желание удивить.
 
 Персональный подход делает каждый заказ по-настоящему особенным — мы подбираем всё так, чтобы превзойти ожидания.
@@ -114,8 +154,7 @@ Need help? Our team is always available on WhatsApp to answer questions and assi
 Здесь Вы не просто покупаете цветы.
 Вы дарите эмоции. И делаете это красиво.`,
     "delivery.title": "Доставка",
-    "delivery.description":
-      `В Luxe Rose Dubai мы знаем, как важно, чтобы ваши заказы приходили точно в срок. Мы доставляем  цветы в течение 1-2 часов, учитывая трафик, и при этом всегда стремимся максимально ускорить процесс.
+    "delivery.description": `В Luxe Rose Dubai мы знаем, как важно, чтобы ваши заказы приходили точно в срок. Мы доставляем  цветы в течение 1-2 часов, учитывая трафик, и при этом всегда стремимся максимально ускорить процесс.
 
 Если вы сделаете заказ заранее и укажете удобное для вас время,
 мы гарантируем, что ваши цветы будут доставлены точно к назначенному часу. В любое время дня мы подберём для вас оптимальное решение,
@@ -126,13 +165,15 @@ Need help? Our team is always available on WhatsApp to answer questions and assi
 
 Для доставки в другие города, такие как Абу-Даби, Шарджа или Дейра, стоимость уточняется индивидуально, и наш администратор всегда на связи в WhatsApp,
 чтобы ответить на все вопросы и помочь с оформлением.`,
-"payment.title":"Оплата",
-"payment.description":"В Luxe Rose Dubai мы уделяем особое внимание вашему комфорту, поэтому предлагаем целую палитру способов оплаты — чтобы каждый мог выбрать то, что действительно удобно: Apple Pay, платёжная ссылка, переводы через российские, дубайские и армянские банки, а также криптовалюта USDT.Выбирайте то, что вам ближе:",
-"payment.ApplePay":"Apple Pay — легко и быстро",
-"payment.Paymentlink":"Платёжная ссылка — удобно, особенно на ходу",
-"payment.Banktransfers":"Банковские переводы — для клиентов из России, ОАЭ и Армении",
-"payment.USDT":"USDT — для тех, кто предпочитает цифровые решения.",    
-"footer.contact": "Связаться с нами",
+    "payment.title": "Оплата",
+    "payment.description":
+      "В Luxe Rose Dubai мы уделяем особое внимание вашему комфорту, поэтому предлагаем целую палитру способов оплаты — чтобы каждый мог выбрать то, что действительно удобно: Apple Pay, платёжная ссылка, переводы через российские, дубайские и армянские банки, а также криптовалюта USDT.Выбирайте то, что вам ближе:",
+    "payment.ApplePay": "Apple Pay — легко и быстро",
+    "payment.Paymentlink": "Платёжная ссылка — удобно, особенно на ходу",
+    "payment.Banktransfers":
+      "Банковские переводы — для клиентов из России, ОАЭ и Армении",
+    "payment.USDT": "USDT — для тех, кто предпочитает цифровые решения.",
+    "footer.contact": "Связаться с нами",
     "footer.follow": "Подписывайтесь на нас",
     "footer.visit": "Посетите наш магазин",
     "basket.title": "Ваша корзина",
@@ -170,21 +211,42 @@ Need help? Our team is always available on WhatsApp to answer questions and assi
     "filter.flower_types": "أنواع الزهور",
     "filter.search": "بحث",
     "filter.clear": "مسح",
+    "filter.clear.Blue": "أزرق",
+    "filter.clear.Fuchsia": "فوشيا",
+    "filter.clear.Green": "أخضر",
+    "filter.clear.Peach": "خوخي",
+    "filter.clear.Pink": "وردي",
+    "filter.clear.Red": "أحمر",
+    "filter.clear.Violet": "بنفسجي",
+    "filter.clear.White": "أبيض",
+    "filter.clear.Yellow": "أصفر",
+    "filter.kind.Rose": "ورد",
+    "filter.kind.Hydrangea": "كوبية",
+    "filter.kind.Peony": "فاوانيا",
+    "filter.kind.Tanacetum": "تاناسيتوم",
+    "filter.kind.Spray Roses": "ورود بخاخة",
+    "filter.kind.French Roses": "ورود فرنسية",
+    "filter.kind.Eustoma": "يوستوما",
+    "filter.kind.Delphinium": "دلفينيوم",
+    "filter.kind.Tulips": "توليب",
+    "filter.kind.Ranunculus": "رانونكولوس",
     "groups.title": "مجموعات الزهور",
     "groups.subtitle": "استكشف مجموعات الزهور المنتقاة بعناية",
     "about.title": "من ن��ن",
-    "about.description":
-      `لوكس روز دبي هو فن سرد القصص الزهرية، وقد صقلته ثلاث سنوات من الشغف والدقة والإبداع في عالم الزهور الفاخرة. نفخر بالتعاون مع علامات تجارية مرموقة وشركات رائدة ومؤثرين في عالم أسلوب الحياة، لنقدم لكم أكثر من مجرد باقات زهور، بل نصنع لحظات زهور لا تُنسى. كل تنسيقة هي مزيج من الأناقة والاهتمام بالتفاصيل والرغبة الصادقة في إبهاركم وإسعادكم. لمستنا الشخصية تجعل كل طلبية فريدة من نوعها، فنحن نصمم كل تفصيلة لتتجاوز التوقعات. هنا، أنت لا تشتري الزهور فحسب، بل تُهديها مشاعرك، وتُبدعها بجمال.`,
+    "about.description": `لوكس روز دبي هو فن سرد القصص الزهرية، وقد صقلته ثلاث سنوات من الشغف والدقة والإبداع في عالم الزهور الفاخرة. نفخر بالتعاون مع علامات تجارية مرموقة وشركات رائدة ومؤثرين في عالم أسلوب الحياة، لنقدم لكم أكثر من مجرد باقات زهور، بل نصنع لحظات زهور لا تُنسى. كل تنسيقة هي مزيج من الأناقة والاهتمام بالتفاصيل والرغبة الصادقة في إبهاركم وإسعادكم. لمستنا الشخصية تجعل كل طلبية فريدة من نوعها، فنحن نصمم كل تفصيلة لتتجاوز التوقعات. هنا، أنت لا تشتري الزهور فحسب، بل تُهديها مشاعرك، وتُبدعها بجمال.`,
     "delivery.title": "التوصيل",
     "delivery.description":
       "نقدم التوصيل في نفس اليوم في جميع أنحاء دبي للطلبات المقدمة قبل الساعة 2 مساءً. يضمن فريق التوصيل المحترف لدينا وصول الزهور في حالة مثالية.",
-   "payment.title":"قسط",
-"payment.description":"في لوكس روز دبي، راحتكم هي الأولوية، ولذلك نقدم لكم مجموعة شاملة من خيارات الدفع التي تناسب نمط حياتكم. سواءً كنتم تفضلون الطرق الرقمية، أو عبر الهاتف المحمول، أو التقليدية، نجعلها سهلة وسلسة:",
-"payment.ApplePay":"Apple Pay — سريع وسهل",
-"payment.Paymentlink":"رابط الدفع - مثالي أثناء تنقلك",
-"payment.Banktransfers":"التحويلات المصرفية - متاحة للعملاء في روسيا والإمارات العربية المتحدة وأرمينيا",
-"payment.USDT":"USDT (العملة المشفرة) - مثالية لأولئك الذين يفضلون التمويل الرقمي",      
-"footer.contact": "اتصل بنا",
+    "payment.title": "قسط",
+    "payment.description":
+      "في لوكس روز دبي، راحتكم هي الأولوية، ولذلك نقدم لكم مجموعة شاملة من خيارات الدفع التي تناسب نمط حياتكم. سواءً كنتم تفضلون الطرق الرقمية، أو عبر الهاتف المحمول، أو التقليدية، نجعلها سهلة وسلسة:",
+    "payment.ApplePay": "Apple Pay — سريع وسهل",
+    "payment.Paymentlink": "رابط الدفع - مثالي أثناء تنقلك",
+    "payment.Banktransfers":
+      "التحويلات المصرفية - متاحة للعملاء في روسيا والإمارات العربية المتحدة وأرمينيا",
+    "payment.USDT":
+      "USDT (العملة المشفرة) - مثالية لأولئك الذين يفضلون التمويل الرقمي",
+    "footer.contact": "اتصل بنا",
     "footer.follow": "تابعنا",
     "footer.visit": "زر متجرنا",
     "basket.title": "سلتك",
@@ -208,20 +270,24 @@ Need help? Our team is always available on WhatsApp to answer questions and assi
     "catalog.go_back": "العودة",
     "catalog.load_more": "تحميل المزيد",
   },
-}
+};
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [currentLanguage, setCurrentLanguage] = useState<ELanguage>(ELanguage.English)
-  const [translations, setTranslations] = useState<Record<string, string>>(mockTranslations[ELanguage.English])
+  const [currentLanguage, setCurrentLanguage] = useState<ELanguage>(
+    ELanguage.English
+  );
+  const [translations, setTranslations] = useState<Record<string, string>>(
+    mockTranslations[ELanguage.English]
+  );
 
   // Load language from localStorage on mount
   useEffect(() => {
-    const savedLanguage = localStorage.getItem("flower-language") as ELanguage
+    const savedLanguage = localStorage.getItem("flower-language") as ELanguage;
     if (savedLanguage && Object.values(ELanguage).includes(savedLanguage)) {
-      setCurrentLanguage(savedLanguage)
-      setTranslations(mockTranslations[savedLanguage])
+      setCurrentLanguage(savedLanguage);
+      setTranslations(mockTranslations[savedLanguage]);
     }
-  }, [])
+  }, []);
 
   const setLanguage = async (language: ELanguage) => {
     try {
@@ -230,34 +296,38 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       // const translatedContent = await response.json()
 
       // For now, use mock translations
-      setCurrentLanguage(language)
-      setTranslations(mockTranslations[language])
-      localStorage.setItem("flower-language", language)
+      setCurrentLanguage(language);
+      setTranslations(mockTranslations[language]);
+      localStorage.setItem("flower-language", language);
 
-      console.log(`Language switched to: ${language}`)
+      console.log(`Language switched to: ${language}`);
     } catch (error) {
-      console.error("Error switching language:", error)
+      console.error("Error switching language:", error);
     }
-  }
+  };
 
   const t = (key: string, fallback?: string) => {
-    return translations[key] || fallback || key
-  }
+    return translations[key] || fallback || key;
+  };
 
   const value: LanguageContextType = {
     currentLanguage,
     setLanguage,
     translations,
     t,
-  }
+  };
 
-  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
+  return (
+    <LanguageContext.Provider value={value}>
+      {children}
+    </LanguageContext.Provider>
+  );
 }
 
 export function useLanguage() {
-  const context = useContext(LanguageContext)
+  const context = useContext(LanguageContext);
   if (context === undefined) {
-    throw new Error("useLanguage must be used within a LanguageProvider")
+    throw new Error("useLanguage must be used within a LanguageProvider");
   }
-  return context
+  return context;
 }

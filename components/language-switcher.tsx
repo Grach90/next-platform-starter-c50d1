@@ -1,24 +1,29 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { ELanguage } from "@/lib/types"
-import { useLanguage } from "@/contexts/language-context"
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ELanguage } from "@/lib/types";
+import { useLanguage } from "@/contexts/language-context";
 
 const LANGUAGES = [
   { code: ELanguage.English, name: "English", flag: "🇺🇸" },
   { code: ELanguage.Russian, name: "Русский", flag: "🇷🇺" },
   { code: ELanguage.Arabic, name: "العربية", flag: "🇦🇪" },
-]
+];
 
 export function LanguageSwitcher() {
-  const { currentLanguage, setLanguage } = useLanguage()
+  const { currentLanguage, setLanguage } = useLanguage();
 
   const handleLanguageChange = async (language: ELanguage) => {
-    await setLanguage(language)
-  }
+    await setLanguage(language);
+  };
 
-  const currentLang = LANGUAGES.find((lang) => lang.code === currentLanguage)
+  const currentLang = LANGUAGES.find((lang) => lang.code === currentLanguage);
 
   return (
     <DropdownMenu>
@@ -44,5 +49,5 @@ export function LanguageSwitcher() {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
