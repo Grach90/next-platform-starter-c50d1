@@ -1,5 +1,5 @@
 [[redirects]]
   from = "/api/*"
-  to = "http://luxerosedubai.somee.com"
+  to = "http://luxerosedubai.somee.com/:splat"
   status = 200
   force = true
