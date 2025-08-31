@@ -1,10 +1,10 @@
 import type { IGroupCard, IFlower, IFilterParams } from "./types" // Assuming these types are declared in a separate file
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://luxerosedubai.somee.com/"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://luxerosedubai.somee.com/"
 
 export class ApiService {
   private static async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
-    const url = endpoint;
+    const url = `${API_BASE_URL}${endpoint}`;
   console.log(url,"url");
   
     try {
@@ -28,14 +28,14 @@ export class ApiService {
   }
 
   static async getAllFlowerGroups() {
-    return this.request<IGroupCard[]>("/api/FlowerGroup/get-all-flower-groups")
+    return this.request<IGroupCard[]>("api/FlowerGroup/get-all-flower-groups")
   }
 
   static async getFlowersByGroup(groupId: string) {
-    return this.request<IFlower[]>(`/api/FlowerGroup/get-flowers-by-flower-group/${groupId}`)
+    return this.request<IFlower[]>(`api/FlowerGroup/get-flowers-by-flower-group/${groupId}`)
   }
   static async getFlowerById(groupId: string) {
-    return this.request<IFlower>(`/api/Flower/get-flower-by-id/${groupId}`)
+    return this.request<IFlower>(`api/Flower/get-flower-by-id/${groupId}?lang=en`)
   }
 
   static async filterFlowers(params: IFilterParams) {
