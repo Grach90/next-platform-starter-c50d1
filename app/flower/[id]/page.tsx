@@ -23,8 +23,6 @@ import {
 import { ImageCarousel } from "@/components/image-carousel";
 import { useBasket } from "@/contexts/basket-context";
 import { ApiService } from "@/lib/api";
-import { LanguageSwitcher } from "@/components/language-switcher";
-import { BasketButton } from "@/components/basket-button";
 import { useLanguage } from "@/contexts/language-context";
 
 const getFlowerById = async (
@@ -125,17 +123,13 @@ export default function FlowerDetailPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b bg-card">
+      <div>
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" onClick={handleBackClick}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t("flower.back")}
             </Button>
-            <div className="flex items-center gap-2">
-              <LanguageSwitcher />
-              <BasketButton />
-            </div>
           </div>
         </div>
       </div>

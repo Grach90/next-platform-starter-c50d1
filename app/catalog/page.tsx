@@ -9,8 +9,6 @@ import { ApiService } from "@/lib/api";
 import type { IFlower, IFilterParams } from "@/lib/types";
 import { BOUQUET_SIZE_NAMES } from "@/lib/constants";
 import { FilterSection } from "@/components/filter-section";
-import { LanguageSwitcher } from "@/components/language-switcher";
-import { BasketButton } from "@/components/basket-button";
 import { useLanguage } from "@/contexts/language-context";
 
 function CatalogContent() {
@@ -62,6 +60,12 @@ function CatalogContent() {
         if (kinds.length) filters.kinds = kinds.map((k) => Number.parseInt(k));
 
         result = await ApiService.filterFlowers(filters, currentLanguage);
+        setTimeout(() => {
+          const a = document.createElement("a");
+          a.href = "#catalog-section";
+          a.click();
+          // router.push("#catalog-section");
+        }, 200);
       }
 
       setFlowers(result.slice(0, 10)); // Initial 10 items
@@ -118,7 +122,7 @@ function CatalogContent() {
       <div className=" bg-card">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1">
               <Button variant="ghost" size="sm" onClick={handleBackClick}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 {t("catalog.back")}
@@ -133,10 +137,6 @@ function CatalogContent() {
                   {flowers.length} {t("catalog.flowers_found")}
                 </p>
               </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <LanguageSwitcher />
-              <BasketButton />
             </div>
           </div>
         </div>
@@ -162,7 +162,10 @@ function CatalogContent() {
           </div>
         ) : (
           <>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <section
+              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+              id="catalog-section"
+            >
               {flowers.map((flower) => (
                 <Card
                   key={flower.id}
@@ -208,7 +211,7 @@ function CatalogContent() {
                   </CardContent>
                 </Card>
               ))}
-            </div>
+            </section>
 
             {hasMore && (
               <div className="text-center mt-8">

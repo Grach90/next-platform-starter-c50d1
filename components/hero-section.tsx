@@ -16,17 +16,12 @@ export function HeroSection() {
         <img
           src="/photo.png"
           alt="Luxury flower arrangement background"
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover object-left"
         />
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/20" />
       </div>
 
-      {/* Top Navigation */}
-      <div className="absolute top-6 right-6 z-20 flex items-center gap-4">
-        <LanguageSwitcher />
-        <BasketButton />
-      </div>
       <div className="absolute bottom-20 z-20 items-center flex flex-col items-center left-1/2 -translate-x-1/2 block md:hidden">
         <Button className="rounded-full bg-pink-300 w-60 h-10 text-lg">
           <a href="#filter">S E A R C H</a>
@@ -66,16 +61,9 @@ export function HeroSection() {
 
       {/* Logo Overlay */}
       <div className="absolute inset-0 z-10 flex justify-center">
-        <div className="text-center mt-23 mr-3 ml-3">
+        <div className="text-center mt-25 mr-10 ml-10">
           {/* SVG Logo Placeholder - Replace with actual SVG */}
           <img src="/logo 1.png" alt="" />
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 animate-bounce">
-        <div className="flex h-12 w-8 items-start justify-center rounded-full border-2 border-white/50 p-2">
-          <div className="h-2 w-1 animate-pulse rounded-full bg-white/70" />
         </div>
       </div>
     </section>
