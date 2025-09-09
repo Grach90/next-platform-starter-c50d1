@@ -45,44 +45,57 @@ export enum ELanguage {
 }
 
 export interface IGroupCard {
-  id: string
-  name: string
-  imageLink: string
+  id: string;
+  name: string;
+  imageLink: string;
 }
 
 export interface IFlowerOptions {
-  id: string
-  size: number
-  price: number
-  imageLinks: string[]
+  id: string;
+  size: number;
+  price: number;
+  imageLinks: string[];
 }
 
 export interface IFlower {
-  id: string
-  name: string
-  description: string
-  bouqetType: number
-  flowerGroupId: string
-  flowerColors: number[]
-  flowerKinds: number[]
-  flowerOptions: IFlowerOptions[]
+  id: string;
+  name: string;
+  description: string;
+  bouqetType: number;
+  flowerGroupId: string;
+  flowerColors: number[];
+  flowerKinds: number[];
+  flowerOptions: IFlowerOptions[];
+  IsActive: Boolean;
+}
+export interface IFlowerAdmin {
+  id: string;
+  name: string;
+  "Description[ar]": string;
+  "Description[en]": string;
+  "Description[ru]": string;
+  bouqetType: number;
+  flowerGroupId: string;
+  flowerColors: number[];
+  flowerKinds: number[];
+  flowerOptions: IFlowerOptions[];
 }
 
 export interface IBasketItem {
-  flowerId: string
-  flowerName: string
-  size: number
-  price: number
-  imageLink: string
-  quantity: number
+  flowerId: string;
+  flowerName: string;
+  size: number;
+  price: number;
+  imageLink: string;
+  quantity: number;
 }
 
 export interface IFilterParams {
-  flowerName?: string
-  bouqetType?: number
-  size?: number
-  minPrice?: number
-  maxPrice?: number
-  colors?: number[]
-  kinds?: number[]
+  flowerName?: string;
+  bouqetType?: number;
+  size?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  colors?: number[];
+  kinds?: number[];
 }
