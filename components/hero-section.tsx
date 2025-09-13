@@ -22,39 +22,35 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-black/20" />
       </div>
 
-      <div className="absolute bottom-20 z-20 items-center flex flex-col items-center left-1/2 -translate-x-1/2 block md:hidden">
-        <Button className="rounded-full bg-pink-300 w-60 h-10 text-lg">
-          <a href="#filter">S E A R C H</a>
+      <div className="absolute w-[320px] h-[206px] bottom-20 z-20 items-center flex flex-col items-center left-1/2 -translate-x-1/2 block md:hidden">
+        <Button className="rounded-[4px] w-[320px] h-[44px] text-lg bg-[#FFFFFF66] justify-start pl-10">
+          <a href="#filter">Search...</a>
         </Button>
-        <Button className="rounded-full bg-pink-300 w-60 h-10 text-lg mt-3">
+        <Button className="rounded-[4px] bg-[#AB96D1] w-[320px] h-[44px] text-lg mt-3">
           <a href="#groups">ORDER / CATALOG</a>
         </Button>
-        <Button className="rounded-full bg-pink-300 w-50 h-9 text-sm mt-3">
-          <a href="#info">About Us/Delivery/Payment</a>
+        <Button className="rounded-[4px] bg-[#E5CAF3] w-[320px] h-[44px] text-lg mt-3">
+          <a href="#info">About Us | Delivery | Payment</a>
         </Button>
-        <Button
-          className="rounded-full bg-gray-400 w-60 h-9 text-2xl mt-3 border-2 border-green-500"
-          onClick={() =>
+        <div className="flex justify-between w-[inherit] mt-[12px]">
+          <div className="flext justify-items-start">
+            <Button className="w-[155px] h-[44px] text-lg bg-[#FFFFFF66] pl-3 justify-start" onClick={() =>
             window.open(`https://wa.me/${WHATSAPP_NUMBER.replace("+", "")}`)
-          }
-        >
-          {" "}
-          Chat
-        </Button>
-        <Button
-          className="absolute bottom-0 -left-1 px-0 bg-transparent pointer-events-none"
-          onClick={() =>
-            window.open(`https://wa.me/${WHATSAPP_NUMBER.replace("+", "")}`)
-          }
-        >
-          <img src="/whatsapp.png" alt="" className="w-10 h-10" />
-        </Button>
-        <Button className="absolute bottom-0 -right-13 px-0">
-          <img src="/instagram.png" alt="" className="w-10 h-10" />
-        </Button>
-        <Button className="absolute top-0 left-0 px-0 bg-transparent">
+          }>
+            <img src="/whatsapp.png" alt="" className="w-[24px] h-[24px]" />
+              Whatsup
+            </Button>
+          </div>
+          <div>
+            <Button className="w-[155px] h-[44px] text-lg bg-[#FFFFFF66] pl-3 justify-start">
+            <img src="/instagram.png" alt="" className="w-[26px] h-[26px]" />
+              Instagram
+            </Button>
+          </div>
+        </div>
+        <Button className="absolute top-0 left-2 px-0 bg-transparent">
           <a href="#groups">
-            <img src="/search.png" alt="" className="w-10 h-10" />
+            <img src="/search.png" alt="" className="w-[24px] h-[24px]" />
           </a>
         </Button>
       </div>

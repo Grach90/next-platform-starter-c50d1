@@ -23,17 +23,17 @@ export function LanguageSwitcher() {
     await setLanguage(language);
   };
 
-  const currentLang = LANGUAGES.find((lang) => lang.code === currentLanguage);
+  const {code}:any = LANGUAGES.find((lang) => lang.code === currentLanguage);
+console.log(code,"currentLang");
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="outline"
           size="icon"
-          className="h-12 w-12 rounded-full border-2 border-white/30 bg-green-900/20 text-white backdrop-blur-sm hover:bg-green-900/10"
+          className="h-[48px] w-[48px] bg-[#F4F4FA4D] border-none backdrop-blur-sm p-[8px] rounded-[8px]"
         >
-          <span className="text-lg">{currentLang?.flag}</span>
+          <img src={ "/" + code+".png"} alt="flag" className="h-[20px] w-[28px]"/>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 bg-[#ffff]">
@@ -43,7 +43,8 @@ export function LanguageSwitcher() {
             onClick={() => handleLanguageChange(language.code)}
             className="flex items-center gap-3 cursor-pointer"
           >
-            <span className="text-lg">{language.flag}</span>
+             <img src={ "/" + language.code+".png"} alt="flag" className="h-[20px] w-[28px]"/>
+            {/* <span className="text-lg">{language.flag}</span> */}
             <span>{language.name}</span>
           </DropdownMenuItem>
         ))}

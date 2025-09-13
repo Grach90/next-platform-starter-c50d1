@@ -28,14 +28,14 @@ import {
   FLOWER_COLOR_NAMES,
   BOUQUET_TYPE_NAMES,
 } from "@/lib/constants";
-import type { IGroupCard, IFlower } from "@/lib/types";
+import type { IGroupCard, IFlower, IFlowerOptions, IFlowerAdmin } from "@/lib/types";
 import { toast } from "sonner";
 import { X } from "lucide-react";
 
 interface FlowerModalProps {
   isOpen: boolean;
   onClose: () => void;
-  flower?: IFlower | null;
+  flower?: IFlowerAdmin | null;
   groups: IGroupCard[];
   onSave: (flower: IFlower) => void;
 }
@@ -50,48 +50,53 @@ export function FlowerModal({
   const [formData, setFormData] = useState({
     name: "",
     priceUSD: "",
-    "Description[en]": "",
-    "Description[ru]": "",
-    "Description[ar]": "",
+    "Descriptions[en]": "",
+    "Descriptions[ru]": "",
+    "Descriptions[ar]": "",
     groupId: "",
     size: "",
     active: "true",
     flowerKinds: [] as number[],
     flowerColors: [] as number[],
     bouquetType: "",
+    flowerOptions:{}
   });
+  const [selectedOption, setSelectedOption] = useState<IFlowerOptions>();
   const [images, setImages] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
-
+ 
   useEffect(() => {
     if (flower) {
       setFormData({
         name: flower.name,
         priceUSD: flower.flowerOptions[0]?.price?.toString() || "",
-        "Description[en]": flower.description,
-        "Description[ru]": flower.description, // In real app, these would be separate fields
-        "Description[ar]": flower.description,
+        "Descriptions[en]": flower["Descriptions[en]"],
+        "Descriptions[ru]": flower["Descriptions[ru]"], // In real app, these would be separate fields
+        "Descriptions[ar]": flower["Descriptions[ar]"],
         groupId: flower.flowerGroupId,
         size: flower.flowerOptions[0]?.size?.toString() || "",
-        active: "true", // Assuming active status
+        active: flower.isActive ? "true" : "false", // Assuming active status
         flowerKinds: flower.flowerKinds || [],
         flowerColors: flower.flowerColors || [],
         bouquetType: flower.bouqetType?.toString() || "",
+        flowerOptions: flower.flowerOptions || {},
       });
       setImages(flower.flowerOptions[0]?.imageLinks || []);
+      setSelectedOption(flower.flowerOptions[0]);
     } else {
       setFormData({
         name: "",
         priceUSD: "",
-        "Description[en]": "",
-        "Description[ru]": "",
-        "Description[ar]": "",
+        "Descriptions[en]": "",
+        "Descriptions[ru]": "",
+        "Descriptions[ar]": "",
         groupId: "",
         size: "",
         active: "true",
         flowerKinds: [],
         flowerColors: [],
         bouquetType: "",
+        flowerOptions:{}
       });
       setImages([]);
     }
@@ -118,6 +123,8 @@ export function FlowerModal({
   };
 
   const toggleFlowerKind = (kindId: number) => {
+    console.log(kindId, "kindId");
+    
     setFormData((prev) => ({
       ...prev,
       flowerKinds: prev.flowerKinds.includes(kindId)
@@ -151,34 +158,89 @@ export function FlowerModal({
     try {
       setSaving(true);
 
-      const flowerData = {
-        id: flower?.id || "",
-        Name: formData.name,
-        "Description[en]": formData["Description[en]"],
-        "Description[ru]": formData["Description[ru]"],
-        "Description[ar]": formData["Description[ar]"],
-        FlowerGroupId: formData.groupId,
-        BouqetType: formData.bouquetType
-          ? Number.parseInt(formData.bouquetType)
-          : 1,
-        FlowerColors: formData.flowerColors,
-        FlowerKinds: formData.flowerKinds,
-        FlowerOptions: [
-          {
-            id: flower?.flowerOptions[0]?.id || "",
-            size: Number.parseInt(formData.size),
-            price: Number.parseFloat(formData.priceUSD),
-            imageLink: images,
-          },
-        ],
-      };
+      
 
-      let savedFlower: IFlower;
-      if (flower) {
+      const flowerData = new FormData();
+      const id = flower?.id || "";
+      const bouqetType = formData.bouquetType
+          ? Number.parseInt(formData.bouquetType)
+          : 1;
+          flowerData.append("Name",formData.name);
+          flowerData.append("Descriptions[en]",formData["Descriptions[en]"]);
+          flowerData.append("Descriptions[ru]",formData["Descriptions[ru]"]);
+          flowerData.append("Descriptions[ar]",formData["Descriptions[ar]"]);
+          flowerData.append("FlowerGroupId",formData.groupId);
+          flowerData.append("BouqetType",bouqetType.toString())
+          
+          for(let i=0; i < formData.flowerColors.length; i++){
+            flowerData.append(`FlowerColors[${i}]`, formData.flowerColors[i].toString())
+          }
+          for(let i=0; i < formData.flowerKinds.length; i++){
+            flowerData.append(`FlowerKinds[${i}]`, formData.flowerKinds[i].toString())
+          }
+          
+      if(flower){
+        flowerData.append("id",id);
+        let currentOptionIndex = flower?.flowerOptions.findIndex(f=> f.size.toString() === formData.size) === -1 ? flower?.flowerOptions.length 
+        : flower?.flowerOptions.findIndex(f=> f.size.toString() === formData.size)
+
+        for(let i = 0; i < flower?.flowerOptions.length; i++){
+          if(i === currentOptionIndex) continue;
+          flowerData.append(`FlowerOptions[${i}].Size`, flower?.flowerOptions[i].size);
+          flowerData.append(`FlowerOptions[${i}].Price`, flower?.flowerOptions[i].price);
+          flowerData.append(`FlowerOptions[${i}].ImageLinks`, flower?.flowerOptions[i].imageLinks);
+        }
+        
+  
+        flowerData.append(`FlowerOptions[${currentOptionIndex}].Size`, formData.size);
+        flowerData.append(`FlowerOptions[${currentOptionIndex}].Price`, formData.priceUSD);
+        for (let i = 0; i < images.length; i++) {
+          const dataUrl = images[i]; // например: "data:image/png;base64,..."
+          if(!dataUrl.includes("https:")){
+            const file = dataURLtoFile(dataUrl, `image_${i}.png`);
+            flowerData.append(`FlowerOptions[${currentOptionIndex}].Images`, file);
+          }else{
+            flowerData.append(`FlowerOptions[${currentOptionIndex}].ImageLinks`, dataUrl);
+          }
+        }
+      }else {
+        flowerData.append(`FlowerOptions[0].Size`, formData.size);
+        flowerData.append(`FlowerOptions[0].Price`, formData.priceUSD);
+        for (let i = 0; i < images.length; i++) {
+          const dataUrl = images[i]; // например: "data:image/png;base64,..."
+            const file = dataURLtoFile(dataUrl, `image_${i}.png`);
+            flowerData.append(`FlowerOptions[0].Images`, file);
+        }
+        // ключ должен совпадать с тем, что ASP.NET ожидает
+  }
+
+
+// функция конвертации DataURL → File
+function dataURLtoFile(dataUrl: any, filename: string) {
+  const arr = dataUrl.split(",");
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, { type: mime });
+}
+
+
+let savedFlower: IFlower;
+if (flower) {
+  const isActive = formData.active === "true" ? true : false;
+        if(isActive !== flower.isActive){
+         const data = await AdminApiService.ActiveInactiveFlower(flower.id, isActive);
+          flowerData.append("data",data)
+        }
         savedFlower = await AdminApiService.updateFlower(flower.id, flowerData);
       } else {
         savedFlower = await AdminApiService.createFlower(flowerData);
       }
+      console.log(savedFlower,"savedFlower");
 
       onSave(savedFlower);
       toast.success(`Flower ${flower ? "updated" : "created"} successfully!`);
@@ -190,6 +252,66 @@ export function FlowerModal({
     }
   };
 
+  const handleSizeChange = (optionId: string) => {
+    let index;
+    const option = flower?.flowerOptions.find((opt,i) => {
+      index = i;
+     return opt.id === optionId})
+    if (option) {
+      option.index = index;
+      console.log(option,"option");
+      setSelectedOption(option);
+      setImages(option.imageLinks);
+      setFormData((prev)=> ({...prev, priceUSD: option.price.toString(), size: option.size.toString()}) )
+    }
+  };
+
+  const handleDeleteFlowerOption = async ()=> {
+    try {
+ setSaving(true);
+    const flowerData = new FormData();
+      const id = flower?.id || "";
+      const bouqetType = formData.bouquetType
+          ? Number.parseInt(formData.bouquetType)
+          : 1;
+          flowerData.append("Name",formData.name);
+          flowerData.append("Descriptions[en]",formData["Descriptions[en]"]);
+          flowerData.append("Descriptions[ru]",formData["Descriptions[ru]"]);
+          flowerData.append("Descriptions[ar]",formData["Descriptions[ar]"]);
+          flowerData.append("FlowerGroupId",formData.groupId);
+          flowerData.append("BouqetType",bouqetType.toString())
+          
+          for(let i=0; i < formData.flowerColors.length; i++){
+            flowerData.append(`FlowerColors[${i}]`, formData.flowerColors[i].toString())
+          }
+          for(let i=0; i < formData.flowerKinds.length; i++){
+            flowerData.append(`FlowerKinds[${i}]`, formData.flowerKinds[i].toString())
+          }
+      flowerData.append("id",id);
+        let currentOptionIndex = flower?.flowerOptions.findIndex(f=> f.size.toString() === formData.size) === -1 ? flower?.flowerOptions.length 
+        : flower?.flowerOptions.findIndex(f=> f.size.toString() === formData.size)
+
+        for(let i = 0; i < flower?.flowerOptions.length; i++){
+          if(i === currentOptionIndex) {
+            flowerData.append(`FlowerOptions[${i}].IsDeleted`,"true");
+            continue;
+          }
+          flowerData.append(`FlowerOptions[${i}].Size`, flower?.flowerOptions[i].size);
+          flowerData.append(`FlowerOptions[${i}].Price`, flower?.flowerOptions[i].price);
+          flowerData.append(`FlowerOptions[${i}].ImageLinks`, flower?.flowerOptions[i].imageLinks);
+        }
+      const savedFlower = await AdminApiService.updateFlower(flower.id, flowerData);
+
+      onSave(savedFlower);
+      toast.success(`Flower Option was deleted successfully!`);
+    } catch (error) {
+      console.error("Failed to delete flower option:", error);
+      toast.error("Failed to delete flower option. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-[90vw] max-w-2xl max-h-[90vh]">
@@ -199,6 +321,33 @@ export function FlowerModal({
 
         <ScrollArea className="max-h-[70vh] pr-4">
           <form onSubmit={handleSubmit} className="space-y-6">
+           {flower &&  <div>
+              <label className="text-sm font-medium text-foreground mb-2 block">
+                Flower Options
+              </label>
+              <Select
+                value={selectedOption?.id || ""}
+                onValueChange={handleSizeChange}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Option size" />
+                </SelectTrigger>
+                <SelectContent>
+                  {flower.flowerOptions.map((option, i) => (
+                    <SelectItem key={i} value={option.id}>
+                      {
+                        BOUQUET_SIZE_NAMES[
+                          option.size as keyof typeof BOUQUET_SIZE_NAMES
+                        ]
+                      }
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {flower.flowerOptions.length > 1 && <Button type="button" variant="destructive" className="mt-4" onClick={handleDeleteFlowerOption}>
+                {saving ? "Deleting..." : "Delete Option"}
+              </Button>}
+            </div>}
             <div>
               <label className="text-sm font-medium mb-2 block">
                 Flower Name *
@@ -234,11 +383,11 @@ export function FlowerModal({
                 Description (English)
               </label>
               <Textarea
-                value={formData["Description[en]"]}
+                value={formData["Descriptions[en]"]}
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    descriptionEN: e.target.value,
+                    "Descriptions[en]": e.target.value,
                   }))
                 }
                 placeholder="Enter description in English"
@@ -251,11 +400,11 @@ export function FlowerModal({
                 Description (Russian)
               </label>
               <Textarea
-                value={formData["Description[ru]"]}
+                value={formData["Descriptions[ru]"]}
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    descriptionRU: e.target.value,
+                    "Descriptions[ru]": e.target.value,
                   }))
                 }
                 placeholder="Enter description in Russian"
@@ -268,11 +417,11 @@ export function FlowerModal({
                 Description (Arabic)
               </label>
               <Textarea
-                value={formData["Description[ar]"]}
+                value={formData["Descriptions[ar]"]}
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    descriptionAR: e.target.value,
+                    "Descriptions[ar]": e.target.value,
                   }))
                 }
                 placeholder="Enter description in Arabic"
@@ -280,7 +429,7 @@ export function FlowerModal({
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 [&_button]:w-full">
               <div>
                 <label className="text-sm font-medium mb-2 block">
                   Group *
@@ -304,7 +453,7 @@ export function FlowerModal({
                 </Select>
               </div>
 
-              <div>
+              <div className="[&_button]:w-full">
                 <label className="text-sm font-medium mb-2 block">Size *</label>
                 <Select
                   value={formData.size}
@@ -325,12 +474,12 @@ export function FlowerModal({
                 </Select>
               </div>
 
-              <div>
+              {flower && <div className="[&_button]:w-full">
                 <label className="text-sm font-medium mb-2 block">Status</label>
                 <Select
                   value={formData.active}
                   onValueChange={(value) =>
-                    setFormData((prev) => ({ ...prev, active: value }))
+                    setFormData((prev) => ({ ...prev, active: value  }))
                   }
                 >
                   <SelectTrigger>
@@ -341,9 +490,8 @@ export function FlowerModal({
                     <SelectItem value="false">Inactive</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </div>}
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="text-sm font-medium mb-2 block">
@@ -389,7 +537,7 @@ export function FlowerModal({
                 </div>
               </div>
 
-              <div>
+              <div className="[&_button]:w-full">
                 <label className="text-sm font-medium mb-2 block">
                   Bouquet Type
                 </label>
@@ -419,7 +567,7 @@ export function FlowerModal({
                 <div>
                   <input
                     type="file"
-                    id="image-upload"
+                    id="image-upload1"
                     multiple
                     accept="image/*"
                     onChange={handleImageUpload}
@@ -430,7 +578,7 @@ export function FlowerModal({
                     variant="outline"
                     size="sm"
                     onClick={() =>
-                      document.getElementById("image-upload")?.click()
+                      document.getElementById("image-upload1")?.click()
                     }
                   >
                     Add Images

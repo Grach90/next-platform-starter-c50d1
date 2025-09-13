@@ -16,7 +16,7 @@ export enum EFlowerKinds {
   Eustoma = 7,
   Delphinium = 8,
   Tulips = 9,
-  Ranunculus = 0,
+  Ranunculus = 10,
 }
 
 export enum EFlowerColors {
@@ -55,30 +55,31 @@ export interface IFlowerOptions {
   size: number;
   price: number;
   imageLinks: string[];
+  index?: number;
 }
 
 export interface IFlower {
   id: string;
   name: string;
-  description: string;
+    description: string;
   bouqetType: number;
   flowerGroupId: string;
   flowerColors: number[];
   flowerKinds: number[];
   flowerOptions: IFlowerOptions[];
-  IsActive: Boolean;
 }
 export interface IFlowerAdmin {
   id: string;
   name: string;
-  "Description[ar]": string;
-  "Description[en]": string;
-  "Description[ru]": string;
+  "Descriptions[ar]": string;
+  "Descriptions[en]": string;
+  "Descriptions[ru]": string;
   bouqetType: number;
   flowerGroupId: string;
   flowerColors: number[];
   flowerKinds: number[];
   flowerOptions: IFlowerOptions[];
+  isActive: boolean;
 }
 
 export interface IBasketItem {
@@ -98,4 +99,9 @@ export interface IFilterParams {
   maxPrice?: number;
   colors?: number[];
   kinds?: number[];
+}
+
+export interface IPageImage {
+  id: string;
+  imageLink: string
 }

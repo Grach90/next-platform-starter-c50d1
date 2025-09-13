@@ -10,14 +10,15 @@ import { AdminApiService } from "@/lib/admin-api";
 import { toast } from "sonner";
 
 export function ImageUploadSection() {
-  const [currentImage, setCurrentImage] = useState<string | null>(null);
+  const [currentImage, setCurrentImage] = useState<string | undefined>(undefined);
   const [isDragging, setIsDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
-
+  
   useEffect(() => {
     loadCurrentImage();
-  }, []);
-
+  }, [currentImage]);
+  
+  console.log(currentImage);
   const loadCurrentImage = async () => {
     try {
       const imageUrl = await AdminApiService.getPageImage();
@@ -70,38 +71,17 @@ export function ImageUploadSection() {
     }
   };
 
-  const handleRemoveImage = async () => {
-    try {
-      await AdminApiService.removePageImage();
-      setCurrentImage(null);
-      toast.success("Homepage image removed successfully!");
-    } catch (error) {
-      console.error("Failed to remove image:", error);
-      toast.error("Failed to remove image. Please try again.");
-    }
-  };
-
   return (
-    <div className="space-y-4">
-      {currentImage ? (
+    <div className="space-y-4 justify-between md:flex md:justify-around">
         <div className="relative">
           <img
             src={currentImage || "/placeholder.svg"}
             alt="Homepage"
             className="w-full h-64 object-cover rounded-lg border"
           />
-          <Button
-            variant="destructive"
-            size="sm"
-            className="absolute top-2 right-2"
-            onClick={handleRemoveImage}
-          >
-            <X className="h-4 w-4" />
-          </Button>
         </div>
-      ) : (
         <Card
-          className={`border-2 border-dashed p-8 text-center transition-colors ${
+          className={`border-2 border-dashed p-8 text-center transition-colors h-64 w-full${
             isDragging
               ? "border-primary bg-primary/5"
               : "border-muted-foreground/25"
@@ -130,7 +110,6 @@ export function ImageUploadSection() {
             </label>
           </Button>
         </Card>
-      )}
     </div>
   );
 }

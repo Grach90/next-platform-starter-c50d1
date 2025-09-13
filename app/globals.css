@@ -117,7 +117,13 @@
   --font-heading: "Avenir Next", "Montserrat", system-ui, sans-serif;
   --font-body: "Avenir Next", "Open Sans", system-ui, sans-serif;
 }
-
+@font-face {
+  font-family: "MyFont";
+  src: url("/fonts/SerlioRegular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -125,6 +131,7 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
+     /* font-family: "MyFont", sans-serif; */
   }
   h1,
   h2,

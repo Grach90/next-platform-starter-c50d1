@@ -4,8 +4,7 @@ import { Toaster } from "sonner";
 import { BasketProvider } from "@/contexts/basket-context";
 import { LanguageProvider } from "@/contexts/language-context";
 import "./globals.css";
-import { LanguageSwitcher } from "@/components/language-switcher";
-import { BasketButton } from "@/components/basket-button";
+import {LanguageBasket} from "@/components/ui/language-basket";
 
 export const metadata: Metadata = {
   title: "Luxe Rose Dubai - Premium Flower Store",
@@ -30,11 +29,8 @@ export default function RootLayout({
         <LanguageProvider>
           <BasketProvider>
             {children}
-            <Toaster position="top-right" />
-            <div className="fixed top-4 right-4 z-20 flex items-center gap-3">
-              <LanguageSwitcher />
-              <BasketButton />
-            </div>
+            <Toaster position="bottom-right" />
+            <LanguageBasket />
           </BasketProvider>
         </LanguageProvider>
       </body>

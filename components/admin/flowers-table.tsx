@@ -61,6 +61,7 @@ export function FlowersTable({
       </div>
     );
   }
+console.log(flowers);
 
   return (
     <div className="border rounded-lg">
@@ -71,9 +72,9 @@ export function FlowersTable({
               <TableHead className="w-20">Image</TableHead>
               <TableHead>Name</TableHead>
               <TableHead className="hidden md:table-cell">Price</TableHead>
-              <TableHead className="hidden md:table-cell">
+              {/* <TableHead className="hidden md:table-cell">
                 Description
-              </TableHead>
+              </TableHead> */}
               <TableHead className="hidden md:table-cell">Group</TableHead>
               <TableHead className="hidden md:table-cell">Status</TableHead>
               <TableHead className="w-24">Actions</TableHead>
@@ -103,19 +104,19 @@ export function FlowersTable({
                   <TableCell className="hidden md:table-cell">
                     ${flower.flowerOptions[0]?.price?.toFixed(2) || "0.00"}
                   </TableCell>
-                  <TableCell className="hidden md:table-cell max-w-xs">
+                  {/* <TableCell className="hidden md:table-cell max-w-xs">
                     <div className="truncate" title={flower.description}>
-                      {flower.description || "No description"}
+                      {flower["descriptions[en]"] || "No description"}
                     </div>
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className="hidden md:table-cell">
                     {getGroupName(flower.flowerGroupId)}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
                     <Badge
-                      variant={flower.IsActive ? "default" : "destructive"}
+                      variant={flower.isActive ? "default" : "destructive"}
                     >
-                      {flower.IsActive ? "Active" : "Inactive"}
+                      {flower.isActive ? "Active" : "Inactive"}
                     </Badge>
                   </TableCell>
                   <TableCell>

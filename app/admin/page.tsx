@@ -16,7 +16,9 @@ import { Plus } from "lucide-react";
 import { ImageUploadSection } from "@/components/admin/image-upload-section";
 import { FlowerModal } from "@/components/admin/flower-modal";
 import { FlowersTable } from "@/components/admin/flowers-table";
+import { AdminHeader } from "@/components/admin/admin-header"
 import { AdminApiService } from "@/lib/admin-api";
+import { AuthService } from "@/lib/auth";
 import type { IGroupCard, IFlower } from "@/lib/types";
 
 export default function AdminPage() {
@@ -40,9 +42,13 @@ export default function AdminPage() {
     searchParams.get("status") || ""
   );
 
-  useEffect(() => {
-    loadInitialData();
-  }, []);
+    useEffect(() => {
+    if (!AuthService.isAuthenticated()) {
+      router.replace("/login")
+      return
+    }
+    loadInitialData()
+  }, [router])
 
   useEffect(() => {
     if (!loading) {
@@ -102,10 +108,10 @@ export default function AdminPage() {
         FlowerGroupId: groupFilter === "all" ? undefined : groupFilter,
         Name: nameFilter || undefined,
       });
-      console.log(flowersData, "flowersData");
-
-      setFlowers(flowersData);
-      setHasMore(flowersData.length === 10);
+      if(flowersData){
+        setFlowers(flowersData);
+        setHasMore(flowersData.length === 10);
+      }
     } catch (error) {
       console.error("Failed to reload table data:", error);
     } finally {
@@ -127,12 +133,14 @@ export default function AdminPage() {
         page: nextPage,
       });
 
-      if (moreFlowers.length === 0) {
+      if (moreFlowers?.length === 0) {
         setHasMore(false);
       } else {
-        setFlowers((prev) => [...prev, ...moreFlowers]);
-        setCurrentPage(nextPage);
-        setHasMore(moreFlowers.length === 10);
+        if(moreFlowers){
+          setFlowers((prev) => [...prev, ...moreFlowers]);
+          setCurrentPage(nextPage);
+          setHasMore(moreFlowers.length === 10);
+        }
       }
     } catch (error) {
       console.error("Failed to load more flowers:", error);
@@ -217,8 +225,7 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <h1 className="text-3xl font-bold mb-8 text-foreground">Admin Panel</h1>
-
+        <AdminHeader />
         <Card className="mb-8">
           <CardHeader>
             <CardTitle>Homepage Image Management</CardTitle>
@@ -233,9 +240,9 @@ export default function AdminPage() {
             <CardTitle>Flowers Management</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="flex flex-col lg:flex-row gap-4 items-end">
-              <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
+            <div className="flex flex-col gap-4 items-end">
+              <div className="flex-1 grid w-full grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="w-full">
                   <label className="text-sm font-medium mb-2 block">
                     Flower Name
                   </label>
@@ -245,7 +252,7 @@ export default function AdminPage() {
                     onChange={(e) => handleNameFilterChange(e.target.value)}
                   />
                 </div>
-                <div>
+                <div className="[&_button]:w-full">
                   <label className="text-sm font-medium mb-2 block">
                     Group
                   </label>
@@ -266,7 +273,7 @@ export default function AdminPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div>
+                <div className="[&_button]:w-full">
                   <label className="text-sm font-medium mb-2 block">
                     Status
                   </label>
@@ -287,7 +294,7 @@ export default function AdminPage() {
               </div>
               <Button
                 onClick={handleAddFlower}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 w-full"
               >
                 <Plus className="h-4 w-4" />
                 Add Flower
