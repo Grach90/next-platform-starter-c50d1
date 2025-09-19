@@ -39,7 +39,8 @@ export function BasketSidebar() {
                   ]
                 }, Qty: ${item.quantity}, Price: $${(
                   item.price * item.quantity
-                ).toFixed(2)})`
+                ).toFixed(2)}),
+                ${item.imageLink}`
             )
             .join("\n")}\n\nTotal: $${total.toFixed(2)}`
         : "Hello! I'm interested in your flower arrangements.";

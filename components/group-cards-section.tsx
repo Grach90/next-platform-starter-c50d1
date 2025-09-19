@@ -112,14 +112,14 @@ export function GroupCardsSection() {
                   alt={group.name}
                   className="w-full object-cover transition-transform duration-300"
                 />
-                <div className="absolute hidden md:block w-full top-0 h-full bg-[#00000063] transition-opacity duration-300 group-hover:bg-transparent" />
+                <div className="absolute w-full top-0 h-full bg-[#00000050] md:bg-[#00000063] transition-opacity duration-300 group-hover:bg-transparent" />
                 <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 transition-all duration-300 hidden md:block">
-                  <h3 className="font-[MyFont] font-bold text-white text-2xl drop-shadow-lg w-max">
+                  <h3 className="font-[MyFont] font-bold text-white text-3xl drop-shadow-lg w-max">
                     {group.name}
                   </h3>
                 </div>
                 <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 block md:hidden opacity-100">
-                  <h3 className="font-[MyFont] text-2xl font-bold text-white drop-shadow-lg whitespace-nowrap">
+                  <h3 className="font-[MyFont] text-3xl font-bold text-white drop-shadow-lg whitespace-nowrap">
                     {group.name}
                   </h3>
                 </div>

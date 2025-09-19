@@ -42,37 +42,37 @@ export function HeroSection() {
       >
         {t("hero.choose")}
       </a>
-      <div className="[&_button]:font-[MyFont] absolute w-[320px] h-[206px] bottom-20 z-20 items-center flex-col left-1/2 -translate-x-1/2 block md:hidden">
+      <div className="[&_button]:font-[MyFont] [&_button]:font-semibold absolute w-[320px] h-[206px] bottom-20 z-20 items-center flex-col left-1/2 -translate-x-1/2 block md:hidden">
         <a href="#filter">
-          <Button className="rounded-[4px] w-[320px] h-[44px] text-lg bg-[#FFFFFF66] justify-start pl-10">
+          <Button className="rounded-[4px] w-[320px] h-[44px] text-[20px] bg-[#FFFFFF66] justify-start pl-10">
             {t("hero.search...")}
           </Button>
         </a>
         <a href="#groups">
-          <Button className="rounded-[4px] bg-[#AB96D1] w-[320px] h-[44px] text-lg mt-3">
+          <Button className="rounded-[4px] bg-[#AB96D1] w-[320px] h-[44px] text-[20px] mt-3">
             {t("hero.Order")}
           </Button>
         </a>
         <a href="#info">
-          <Button className="rounded-[4px] bg-[#E5CAF3] w-[320px] h-[44px] text-lg mt-3">
+          <Button className="rounded-[4px] bg-[#E5CAF3] w-[320px] h-[44px] text-[20px] mt-3">
             {t("hero.aboutus")}
           </Button>
         </a>
         <div className="flex justify-between w-[inherit] mt-[12px]">
           <div className="flext justify-items-start">
             <Button
-              className="w-[155px] h-[44px] text-lg bg-[#FFFFFF66] pl-3 justify-start"
+              className="w-[155px] h-[44px] text-[20px] bg-[#FFFFFF66] pl-3 justify-start"
               onClick={() =>
                 window.open(`https://wa.me/${WHATSAPP_NUMBER.replace("+", "")}`)
               }
             >
               <img src="/whatsapp.png" alt="" className="w-[24px] h-[24px]" />
-              Whatsup
+              WhatsApp
             </Button>
           </div>
           <div>
             <Button
-              className="w-[155px] h-[44px] text-lg bg-[#FFFFFF66] pl-3 justify-start"
+              className="w-[155px] h-[44px] text-[20px] bg-[#FFFFFF66] pl-3 justify-start"
               onClick={() =>
                 window.open(
                   `https://www.instagram.com/luxerosedubai?igsh=MXdsejJ3ZnpxZzA2Nw==`
