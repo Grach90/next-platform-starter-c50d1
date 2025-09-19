@@ -23,8 +23,7 @@ export function LanguageSwitcher() {
     await setLanguage(language);
   };
 
-  const {code}:any = LANGUAGES.find((lang) => lang.code === currentLanguage);
-console.log(code,"currentLang");
+  const { code }: any = LANGUAGES.find((lang) => lang.code === currentLanguage);
 
   return (
     <DropdownMenu>
@@ -33,7 +32,11 @@ console.log(code,"currentLang");
           size="icon"
           className="h-[48px] w-[48px] bg-[#F4F4FA4D] border-none backdrop-blur-sm p-[8px] rounded-[8px]"
         >
-          <img src={ "/" + code+".png"} alt="flag" className="h-[20px] w-[28px]"/>
+          <img
+            src={"/" + code + ".png"}
+            alt="flag"
+            className="h-[20px] w-[28px]"
+          />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 bg-[#ffff]">
@@ -43,7 +46,11 @@ console.log(code,"currentLang");
             onClick={() => handleLanguageChange(language.code)}
             className="flex items-center gap-3 cursor-pointer"
           >
-             <img src={ "/" + language.code+".png"} alt="flag" className="h-[20px] w-[28px]"/>
+            <img
+              src={"/" + language.code + ".png"}
+              alt="flag"
+              className="h-[20px] w-[28px]"
+            />
             {/* <span className="text-lg">{language.flag}</span> */}
             <span>{language.name}</span>
           </DropdownMenuItem>

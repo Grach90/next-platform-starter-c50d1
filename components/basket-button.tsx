@@ -1,31 +1,47 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { ShoppingBag } from "lucide-react"
-import { useBasket } from "@/contexts/basket-context"
-import { BasketSidebar } from "./basket-sidebar"
+import { Button } from "@/components/ui/button";
+import { ShoppingBag } from "lucide-react";
+import { useBasket } from "@/contexts/basket-context";
+import { BasketSidebar } from "./basket-sidebar";
+import { usePathname } from "next/navigation";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
 
 export function BasketButton() {
-  const { state, setOpen, getTotalItems } = useBasket()
-  const basketCount = getTotalItems()
-
+  const pathName = usePathname();
+  const { state, setOpen, getTotalItems } = useBasket();
+  const basketCount = getTotalItems();
+  if (basketCount === 0) {
+    return null;
+  }
+  if (pathName.includes("/admin") || pathName.includes("/login")) return null;
   return (
     <>
       <Button
-        variant="outline"
+        variant="default"
         size="icon"
-        className="relative h-12 w-12 rounded-full border-2 border-white/30 bg-green-900/20 text-white backdrop-blur-sm "
+        className="fixed z-10 bottom-4 left-6 h-12 w-12 bg-transparent border-none md:top-25 md:right-12 md:left-auto"
         onClick={() => setOpen(true)}
       >
-        <ShoppingBag className="h-5 w-5" />
+        <img src="/shop.png" alt="shop" />
         {basketCount > 0 && (
-          <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-foreground">
+          <span className="absolute -right-2 -bottom-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff0000] text-xs font-bold text-white">
             {basketCount}
           </span>
         )}
       </Button>
+      <Button
+        variant="default"
+        size="icon"
+        className="fixed z-10 bottom-2 right-6 h-15 w-15 bg-transparent border-none cursor-pointer md:bottom-10 md:right-12"
+        onClick={() =>
+          window.open(`https://wa.me/${WHATSAPP_NUMBER.replace("+", "")}`)
+        }
+      >
+        <img src="/whatsapp.png" alt="whatsapp" />
+      </Button>
 
       <BasketSidebar />
     </>
-  )
+  );
 }

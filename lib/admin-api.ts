@@ -1,14 +1,14 @@
 import type { IGroupCard, IFlower, IPageImage } from "./types";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://luxerosedubai.somee.com/";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://luxerosedubai-001-site1.rtempurl.com/";
 
 export class AdminApiService {
   private static async request<T>(
     endpoint: string,
     options?: RequestInit
   ): Promise<T | null> {
-
     const url = `${API_BASE_URL}${endpoint}`;
 
     try {
@@ -31,10 +31,8 @@ export class AdminApiService {
     }
   }
   // Homepage Image Management
-  static async getPageImage(){
-    const response = await this.request<IPageImage>(
-      "api/Page/get-page-image"
-    );
+  static async getPageImage() {
+    const response = await this.request<IPageImage>("api/Page/get-page-image");
 
     if (response) {
       return response.imageLink;
@@ -82,11 +80,14 @@ export class AdminApiService {
     return this.request<IFlower[]>("api/Flower/get-all-flowers?lang=en");
   }
 
-  static async ActiveInactiveFlower(id: string,isArchive: boolean) {
+  static async ActiveInactiveFlower(id: string, isArchive: boolean) {
     const archiveInarchive = !isArchive ? "archive" : "unarchive";
-    const response = await fetch(`${API_BASE_URL}api/Flower/${archiveInarchive}-flower/${id}`, {
-      method: "PUT",
-    });
+    const response = await fetch(
+      `${API_BASE_URL}api/Flower/${archiveInarchive}-flower/${id}`,
+      {
+        method: "PUT",
+      }
+    );
     return response.json();
   }
   static async createFlower(flowerData: FormData) {
@@ -119,9 +120,9 @@ export class AdminApiService {
     page?: number;
   }): Promise<IFlower[] | null> {
     const queryParams = new URLSearchParams();
-    if (params.FlowerFilter){
+    if (params.FlowerFilter) {
       queryParams.append("FlowerFilter", params.FlowerFilter);
-    }else {
+    } else {
       queryParams.append("FlowerFilter", "all");
     }
     if (params.FlowerGroupId)

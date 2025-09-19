@@ -125,7 +125,10 @@ export default function FlowerDetailPage() {
       {/* Header */}
       <div>
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div>
+            <a href="/" className=" flex justify-center grow-1 cursor-pointer">
+              <img src="/logo-2.svg" alt="logo" className="w-20" />
+            </a>
             <Button variant="ghost" size="sm" onClick={handleBackClick}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t("flower.back")}

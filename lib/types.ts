@@ -61,12 +61,13 @@ export interface IFlowerOptions {
 export interface IFlower {
   id: string;
   name: string;
-    description: string;
+  description: string;
   bouqetType: number;
   flowerGroupId: string;
   flowerColors: number[];
   flowerKinds: number[];
   flowerOptions: IFlowerOptions[];
+  isActive?: boolean;
 }
 export interface IFlowerAdmin {
   id: string;
@@ -103,5 +104,5 @@ export interface IFilterParams {
 
 export interface IPageImage {
   id: string;
-  imageLink: string
+  imageLink: string;
 }

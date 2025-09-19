@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { Phone, MessageCircle, Instagram, MapPin } from "lucide-react"
-import { WHATSAPP_NUMBER } from "@/lib/constants"
-import { useLanguage } from "@/contexts/language-context"
+import { Phone, MessageCircle, Instagram, MapPin } from "lucide-react";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
+import { useLanguage } from "@/contexts/language-context";
 
 export function Footer() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
 
   const handleWhatsAppClick = () => {
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER.replace("+", "")}`
-    window.open(whatsappUrl, "_blank")
-  }
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER.replace("+", "")}`;
+    window.open(whatsappUrl, "_blank");
+  };
 
   return (
     <footer className="bg-primary text-primary-foreground py-12">
@@ -36,7 +36,7 @@ export function Footer() {
           <div className="text-center">
             <h3 className="text-xl font-bold mb-4">{t("footer.follow")}</h3>
             <a
-              href="https://instagram.com/luxerosedubai"
+              href="https://www.instagram.com/luxerosedubai?igsh=MXdsejJ3ZnpxZzA2Nw=="
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 hover:text-accent transition-colors"
@@ -59,9 +59,11 @@ export function Footer() {
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center">
-          <p className="text-sm text-primary-foreground/70">© 2024 Luxe Rose Dubai. All rights reserved.</p>
+          <p className="text-sm text-primary-foreground/70">
+            © 2024 Luxe Rose Dubai. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
-  )
+  );
 }

@@ -1,7 +1,8 @@
 import type { IGroupCard, IFlower, IFilterParams } from "./types"; // Assuming these types are declared in a separate file
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://luxerosedubai.somee.com/";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://luxerosedubai-001-site1.rtempurl.com/";
 
 export class ApiService {
   private static async request<T>(
@@ -75,5 +76,8 @@ export class ApiService {
     return this.request<IFlower[]>(
       `api/Flower/filter?${searchParams.toString()}&lang=${currentLanguage}`
     );
+  }
+  static async getPgeImge() {
+    return this.request<string>(`api/Page/get-page-image`);
   }
 }

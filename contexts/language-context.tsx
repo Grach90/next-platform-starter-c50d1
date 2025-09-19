@@ -20,6 +20,7 @@ const mockTranslations = {
   [ELanguage.English]: {
     "hero.title": "Luxe Rose Dubai",
     "hero.subtitle": "Premium Flower Arrangements",
+    "hero.choose": "Choose",
     "filter.title": "Find Your Perfect Flowers",
     "filter.subtitle": "Filter and search through our collection",
     "filter.search_placeholder": "Search flower name...",
@@ -113,6 +114,7 @@ Need help? Our team is always available on WhatsApp to answer questions and assi
   [ELanguage.Russian]: {
     "hero.title": "Люкс Роуз Дубай",
     "hero.subtitle": "Премиальные цветочные композиции",
+    "hero.choose": "Выбрать",
     "filter.title": "Найдите свои идеальные цветы",
     "filter.subtitle": "Фильтруйте и ищите в нашей коллекции",
     "filter.search_placeholder": "Поиск по названию цветка...",
@@ -200,6 +202,7 @@ Need help? Our team is always available on WhatsApp to answer questions and assi
   [ELanguage.Arabic]: {
     "hero.title": "لوكس روز دبي",
     "hero.subtitle": "تنسيقات زهور فاخرة",
+    "hero.choose": "يختار",
     "filter.title": "اعثر على الزهور المثالية",
     "filter.subtitle": "قم بالتصفية والبحث في مجموعتنا",
     "filter.search_placeholder": "البحث عن اسم الزهرة...",

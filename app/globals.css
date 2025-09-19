@@ -131,7 +131,7 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
-     /* font-family: "MyFont", sans-serif; */
+    /* font-family: "MyFont", sans-serif; */
   }
   h1,
   h2,
@@ -139,7 +139,8 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-heading);
+    font-family: "MyFont", sans-serif;
+    /* font-family: var(--font-heading); */
     font-weight: 600;
   }
 }

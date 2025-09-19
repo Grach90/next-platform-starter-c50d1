@@ -1,58 +1,131 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { X, ChevronLeft, ChevronRight } from "lucide-react"
+import type React from "react";
+
+import { useState, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ImageCarouselProps {
-  images: string[]
-  isOpen: boolean
-  onClose: () => void
-  initialIndex?: number
-  title?: string
+  images: string[];
+  isOpen: boolean;
+  onClose: () => void;
+  initialIndex?: number;
+  title?: string;
 }
 
-export function ImageCarousel({ images, isOpen, onClose, initialIndex = 0, title }: ImageCarouselProps) {
-  const [currentIndex, setCurrentIndex] = useState(initialIndex)
+export function ImageCarousel({
+  images,
+  isOpen,
+  onClose,
+  initialIndex = 0,
+  title,
+}: ImageCarouselProps) {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const imageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    setCurrentIndex(initialIndex)
-  }, [initialIndex])
+    setCurrentIndex(initialIndex);
+  }, [initialIndex]);
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset"
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.body.style.overflow = "unset"
-    }
-  }, [isOpen])
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    setIsZoomed(false);
+    setPanPosition({ x: 0, y: 0 });
+  }, [currentIndex]);
 
   const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
-  }
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
-  }
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleImageClick = (e: React.MouseEvent) => {
+    // Prevent zoom if clicking on navigation buttons
+    if ((e.target as HTMLElement).closest("button")) return;
+
+    setIsZoomed(!isZoomed);
+    if (isZoomed) {
+      setPanPosition({ x: 0, y: 0 });
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!isZoomed) return;
+    setIsDragging(true);
+    setDragStart({
+      x: e.clientX - panPosition.x,
+      y: e.clientY - panPosition.y,
+    });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !isZoomed) return;
+    setPanPosition({
+      x: e.clientX - dragStart.x,
+      y: e.clientY - dragStart.y,
+    });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isZoomed) return;
+    const touch = e.touches[0];
+    setIsDragging(true);
+    setDragStart({
+      x: touch.clientX - panPosition.x,
+      y: touch.clientY - panPosition.y,
+    });
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !isZoomed) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    setPanPosition({
+      x: touch.clientX - dragStart.x,
+      y: touch.clientY - dragStart.y,
+    });
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "Escape") onClose()
-    if (e.key === "ArrowLeft") handlePrevious()
-    if (e.key === "ArrowRight") handleNext()
-  }
+    if (e.key === "Escape") onClose();
+    if (e.key === "ArrowLeft") handlePrevious();
+    if (e.key === "ArrowRight") handleNext();
+  };
 
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener("keydown", handleKeyDown)
-      return () => document.removeEventListener("keydown", handleKeyDown)
+      document.addEventListener("keydown", handleKeyDown);
+      return () => document.removeEventListener("keydown", handleKeyDown);
     }
-  }, [isOpen])
+  }, [isOpen]);
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90">
@@ -88,12 +161,33 @@ export function ImageCarousel({ images, isOpen, onClose, initialIndex = 0, title
         </>
       )}
 
-      {/* Main Image */}
-      <div className="relative h-[90vh] w-[90vw] max-w-4xl">
+      {/* Main Image Container */}
+      <div
+        className="relative h-[90vh] w-[90vw] max-w-4xl overflow-hidden cursor-pointer"
+        onClick={handleImageClick}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        style={{
+          cursor: isZoomed ? (isDragging ? "grabbing" : "grab") : "zoom-in",
+        }}
+      >
         <img
+          ref={imageRef}
           src={images[currentIndex] || "/placeholder.svg"}
           alt={`${title} - Image ${currentIndex + 1}`}
-          className="h-full w-full object-contain"
+          className="h-full w-full object-contain transition-transform duration-300 ease-out"
+          style={{
+            transform: `scale(${isZoomed ? 2 : 1}) translate(${
+              panPosition.x / (isZoomed ? 2 : 1)
+            }px, ${panPosition.y / (isZoomed ? 2 : 1)}px)`,
+            transformOrigin: "center center",
+          }}
+          draggable={false}
         />
       </div>
 
@@ -125,5 +219,5 @@ export function ImageCarousel({ images, isOpen, onClose, initialIndex = 0, title
         </div>
       )}
     </div>
-  )
+  );
 }

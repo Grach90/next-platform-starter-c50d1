@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { ApiService } from "@/lib/api";
-import type { IFlower, IFilterParams } from "@/lib/types";
+import type { IFlower, IFilterParams, IFlowerOptions } from "@/lib/types";
 import { BOUQUET_SIZE_NAMES } from "@/lib/constants";
 import { FilterSection } from "@/components/filter-section";
 import { useLanguage } from "@/contexts/language-context";
@@ -79,6 +79,29 @@ function CatalogContent() {
     }
   };
 
+  const findPriceInterval = (flowerOptions: IFlowerOptions[]) => {
+    if (flowerOptions.length === 1) {
+      return `${flowerOptions[0].price} $`;
+    }
+
+    let minPrice = flowerOptions[0].price;
+    let maxPrice = flowerOptions[0].price;
+
+    flowerOptions.forEach((i) => {
+      if (i.price < minPrice) minPrice = i.price;
+    });
+
+    flowerOptions.forEach((i) => {
+      if (i.price > maxPrice) maxPrice = i.price;
+    });
+
+    if (minPrice === maxPrice) {
+      return `${minPrice} $`;
+    } else {
+      return `${minPrice} - ${maxPrice} $`;
+    }
+  };
+
   const loadMore = () => {
     // TODO: Implement pagination with API
     const nextPageItems = flowers.length + 10;
@@ -122,20 +145,28 @@ function CatalogContent() {
       <div className=" bg-card">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1">
-              <Button variant="ghost" size="sm" onClick={handleBackClick}>
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {t("catalog.back")}
-              </Button>
-              <div>
-                <h1 className="text-md md:text-lg font-bold">
-                  {isGroupCatalog
-                    ? t("catalog.flower_collection")
-                    : t("catalog.search_results")}
-                </h1>
-                <p className="text-muted-foreground">
-                  {flowers.length} {t("catalog.flowers_found")}
-                </p>
+            <div className=" w-full">
+              <a
+                href="/"
+                className=" flex justify-center grow-1 cursor-pointer"
+              >
+                <img src="/logo-2.svg" alt="logo" className="w-20" />
+              </a>
+              <div className="flex">
+                <Button variant="ghost" size="sm" onClick={handleBackClick}>
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  {t("catalog.back")}
+                </Button>
+                {/* <div>
+                  <h1 className="text-md md:text-lg font-bold">
+                    {isGroupCatalog
+                      ? t("catalog.flower_collection")
+                      : t("catalog.search_results")}
+                  </h1>
+                  <p className="text-muted-foreground">
+                    {flowers.length} {t("catalog.flowers_found")}
+                  </p>
+                </div> */}
               </div>
             </div>
           </div>
@@ -163,13 +194,13 @@ function CatalogContent() {
         ) : (
           <>
             <section
-              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+              className="grid gap-8 grid-cols-2 lg:grid-cols-3 "
               id="catalog-section"
             >
               {flowers.map((flower) => (
                 <Card
                   key={flower.id}
-                  className="p-0 cursor-pointer overflow-hidden transition-transform hover:scale-105"
+                  className="p-0 cursor-pointer overflow-hidden transition-transform rounded-none"
                   onClick={() => handleFlowerClick(flower)}
                 >
                   <div className="aspect-square overflow-hidden">
@@ -179,23 +210,23 @@ function CatalogContent() {
                         "/placeholder.svg?height=300&width=300"
                       }
                       alt={flower.name}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover hover:scale-150"
                     />
                   </div>
-                  <CardContent className="p-4 pt-0">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-card-foreground truncate">
+                  <CardContent className="pb-4 pt-0 pl-0 border-none">
+                    <div className="">
+                      <h3 className="font-semibold text-card-foreground truncate text-xs md:text-xl pb-2">
                         {flower.name}
                       </h3>
-                      <p className="font-bold text-accent">
-                        ${flower.flowerOptions[0]?.price || 0}
+                      <p className="font-bold text-[#ee5400] text-xs md:pb-2">
+                        {findPriceInterval(flower.flowerOptions)}
                       </p>
                     </div>
                     <div className="flex">
-                      <p className="text-sm text-muted-foreground mt-1">
+                      <p className="text-xs md:text-xs :text-muted-foreground mt-1">
                         {t("flower.size")}:
                       </p>
-                      <div className="flex pl-5 text-sm text-muted-foreground mt-1">
+                      <div className="flex text-xs md:text-xs pl-5 text-muted-foreground mt-1">
                         {flower.flowerOptions.map((option, i, arr) => (
                           <p key={i}>
                             {
