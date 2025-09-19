@@ -38,6 +38,7 @@ const getFlowerById = async (
 
 export default function FlowerDetailPage() {
   const params = useParams();
+
   const router = useRouter();
   const [flower, setFlower] = useState<IFlower | null>(null);
   const [loading, setLoading] = useState(true);
@@ -85,6 +86,7 @@ export default function FlowerDetailPage() {
       size: selectedOption.size,
       price: selectedOption.price,
       imageLink: selectedOption.imageLinks[0],
+      href: window.location.href,
       quantity: 1,
     };
 

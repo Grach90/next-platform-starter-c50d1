@@ -26,6 +26,7 @@ export function BasketSidebar() {
   const { t } = useLanguage();
   const total = getTotalPrice();
   const basketCount = getTotalItems();
+  console.log(state.items, "iteeem");
 
   const handleWhatsAppRedirect = () => {
     const message =
@@ -40,7 +41,7 @@ export function BasketSidebar() {
                 }, Qty: ${item.quantity}, Price: $${(
                   item.price * item.quantity
                 ).toFixed(2)}),
-                ${item.imageLink}`
+                ${item.href}`
             )
             .join("\n")}\n\nTotal: $${total.toFixed(2)}`
         : "Hello! I'm interested in your flower arrangements.";

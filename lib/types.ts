@@ -90,6 +90,7 @@ export interface IBasketItem {
   price: number;
   imageLink: string;
   quantity: number;
+  href: string;
 }
 
 export interface IFilterParams {
