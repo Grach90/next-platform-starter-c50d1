@@ -72,6 +72,13 @@ export function GroupCardsSection() {
     );
   }
 
+  const interval: any = {
+    Bouquets: 450,
+    "Mono / Duo": 350,
+    "Baskets/Boxes": 750,
+    "Luxury Wow / XXL": 2500,
+  };
+
   return (
     <section className="py-16" id="groups">
       <div className="container mx-auto px-4">
@@ -108,9 +115,11 @@ export function GroupCardsSection() {
                     {group.name}
                   </h3>
                 </div>
-                <p className="absolute font-[MyFont] md:hidden w-[200px] h-[30px] -bottom-[15px] -translate-y-1/2 left-1/2 -translate-x-1/2 bg-white text-center group-hover:block">
-                  From 450 aed
-                </p>
+                {interval[group.name] && (
+                  <p className="absolute font-[MyFont] md:hidden w-[200px] h-[30px] -bottom-[15px] -translate-y-1/2 left-1/2 -translate-x-1/2 bg-white text-center group-hover:block">
+                    {`From ${interval[group.name]} aed`}
+                  </p>
+                )}
               </div>
             </Card>
           ))}
