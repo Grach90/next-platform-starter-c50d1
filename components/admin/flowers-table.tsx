@@ -61,7 +61,6 @@ export function FlowersTable({
       </div>
     );
   }
-console.log(flowers);
 
   return (
     <div className="border rounded-lg">
