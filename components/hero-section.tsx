@@ -79,7 +79,7 @@ export function HeroSection() {
                 )
               }
             >
-              <img src="/instagram.png" alt="" className="w-[26px] h-[26px]" />
+              <img src="/instagram.png" alt="" className="w-[35px] h-[35px]" />
               Instagram
             </Button>
           </div>
