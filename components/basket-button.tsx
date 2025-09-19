@@ -11,25 +11,26 @@ export function BasketButton() {
   const pathName = usePathname();
   const { state, setOpen, getTotalItems } = useBasket();
   const basketCount = getTotalItems();
-  if (basketCount === 0) {
-    return null;
-  }
+
   if (pathName.includes("/admin") || pathName.includes("/login")) return null;
   return (
     <>
-      <Button
-        variant="default"
-        size="icon"
-        className="fixed z-10 bottom-4 left-6 h-12 w-12 bg-transparent border-none md:top-25 md:right-12 md:left-auto"
-        onClick={() => setOpen(true)}
-      >
-        <img src="/shop.png" alt="shop" />
-        {basketCount > 0 && (
-          <span className="absolute -right-2 -bottom-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff0000] text-xs font-bold text-white">
-            {basketCount}
-          </span>
-        )}
-      </Button>
+      {basketCount === 0 || (
+        <Button
+          variant="default"
+          size="icon"
+          className="fixed z-10 bottom-4 left-6 h-12 w-12 bg-transparent border-none md:top-25 md:right-12 md:left-auto"
+          onClick={() => setOpen(true)}
+        >
+          <img src="/shop.png" alt="shop" />
+          {basketCount > 0 && (
+            <span className="absolute -right-2 -bottom-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff0000] text-xs font-bold text-white">
+              {basketCount}
+            </span>
+          )}
+        </Button>
+      )}
+      {basketCount === 0 || <BasketSidebar />}
       <Button
         variant="default"
         size="icon"
@@ -40,8 +41,6 @@ export function BasketButton() {
       >
         <img src="/whatsapp.png" alt="whatsapp" />
       </Button>
-
-      <BasketSidebar />
     </>
   );
 }

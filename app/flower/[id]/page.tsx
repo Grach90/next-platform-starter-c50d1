@@ -183,7 +183,7 @@ export default function FlowerDetailPage() {
                 {flower.name}
               </h1>
               <p className="text-2xl font-bold text-accent mt-2">
-                ${selectedOption?.price}
+                {selectedOption?.price} AED
               </p>
             </div>
 

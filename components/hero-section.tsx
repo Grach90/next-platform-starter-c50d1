@@ -43,15 +43,21 @@ export function HeroSection() {
         {t("hero.choose")}
       </a>
       <div className="[&_button]:font-[MyFont] absolute w-[320px] h-[206px] bottom-20 z-20 items-center flex-col left-1/2 -translate-x-1/2 block md:hidden">
-        <Button className="rounded-[4px] w-[320px] h-[44px] text-lg bg-[#FFFFFF66] justify-start pl-10">
-          <a href="#filter">Search...</a>
-        </Button>
-        <Button className="rounded-[4px] bg-[#AB96D1] w-[320px] h-[44px] text-lg mt-3">
-          <a href="#groups">ORDER / CATALOG</a>
-        </Button>
-        <Button className="rounded-[4px] bg-[#E5CAF3] w-[320px] h-[44px] text-lg mt-3">
-          <a href="#info">About Us | Delivery | Payment</a>
-        </Button>
+        <a href="#filter">
+          <Button className="rounded-[4px] w-[320px] h-[44px] text-lg bg-[#FFFFFF66] justify-start pl-10">
+            {t("hero.search...")}
+          </Button>
+        </a>
+        <a href="#groups">
+          <Button className="rounded-[4px] bg-[#AB96D1] w-[320px] h-[44px] text-lg mt-3">
+            {t("hero.Order")}
+          </Button>
+        </a>
+        <a href="#info">
+          <Button className="rounded-[4px] bg-[#E5CAF3] w-[320px] h-[44px] text-lg mt-3">
+            {t("hero.aboutus")}
+          </Button>
+        </a>
         <div className="flex justify-between w-[inherit] mt-[12px]">
           <div className="flext justify-items-start">
             <Button

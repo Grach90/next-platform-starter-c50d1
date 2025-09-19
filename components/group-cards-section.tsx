@@ -77,6 +77,14 @@ export function GroupCardsSection() {
     "Mono / Duo": 350,
     "Baskets/Boxes": 750,
     "Luxury Wow / XXL": 2500,
+    Букеты: 450,
+    "Моно / Дуо": 350,
+    "Корзины / Коробки": 750,
+    "Роскошные «Bay» / XXL": 2500,
+    باقات: 450,
+    "أحادي/ثنائي": 350,
+    "سلال / صناديق": 750,
+    'فاخر "خليج" / XXL': 2500,
   };
 
   return (
@@ -88,11 +96,11 @@ export function GroupCardsSection() {
           </h2>
         </div>
 
-        <div className="grid gap-0.5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ">
+        <div className="grid pl-5 pr-5 gap-0.5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ">
           {groups.map((group) => (
             <Card
               key={group.id}
-              className=" group rounded-none cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-lg p-0 h-min"
+              className="group rounded-none cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-lg p-0 h-min"
               onClick={() => handleGroupClick(group)}
             >
               <div className="relative overflow-hidden">
@@ -116,8 +124,8 @@ export function GroupCardsSection() {
                   </h3>
                 </div>
                 {interval[group.name] && (
-                  <p className="absolute font-[MyFont] md:hidden w-[200px] h-[30px] -bottom-[15px] -translate-y-1/2 left-1/2 -translate-x-1/2 bg-white text-center group-hover:block">
-                    {`From ${interval[group.name]} aed`}
+                  <p className="absolute pt-1 font-[MyFont] md:hidden w-[200px] h-[30px] -bottom-[15px] -translate-y-1/2 left-1/2 -translate-x-1/2 bg-white text-center group-hover:block">
+                    {`${t("groups.from")} ${interval[group.name]} aed`}
                   </p>
                 )}
               </div>

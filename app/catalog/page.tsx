@@ -81,7 +81,7 @@ function CatalogContent() {
 
   const findPriceInterval = (flowerOptions: IFlowerOptions[]) => {
     if (flowerOptions.length === 1) {
-      return `${flowerOptions[0].price} $`;
+      return `${flowerOptions[0].price} AED`;
     }
 
     let minPrice = flowerOptions[0].price;
@@ -96,9 +96,9 @@ function CatalogContent() {
     });
 
     if (minPrice === maxPrice) {
-      return `${minPrice} $`;
+      return `${minPrice} AED`;
     } else {
-      return `${minPrice} - ${maxPrice} $`;
+      return `${minPrice} - ${maxPrice} AED`;
     }
   };
 
