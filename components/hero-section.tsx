@@ -42,7 +42,7 @@ export function HeroSection() {
       >
         {t("hero.choose")}
       </a>
-      <div className=" [&_button]:font-semibold absolute w-[320px] h-[206px] bottom-20 z-20 items-center flex-col left-1/2 -translate-x-1/2 block md:hidden">
+      <div className=" [&_a]:font-[Playfair-SemiBold] absolute w-[320px] h-[206px] bottom-20 z-20 items-center flex-col left-1/2 -translate-x-1/2 block md:hidden">
         <a href="#filter">
           <Button className="rounded-[4px] w-[320px] h-[44px] text-[20px] bg-[#FFFFFF66] justify-start pl-10">
             {t("hero.search...")}

@@ -15,12 +15,12 @@ export function LanguageBasket() {
 
   if (pathName.includes("/admin") || pathName.includes("/login")) return null;
   return (
-    <div className="fixed w-[112px] h-[48px] top-4 right-4 z-20 flex items-center gap-3">
+    <div className="fixed w-[82px] h-[36px] top-4 right-4 z-20 flex items-center gap-3">
       <LanguageSwitcher />
       <div className="">
         <Button
           onClick={toggleSidebar}
-          className="h-12 w-12 bg-[#F4F4FA4D] border-none backdrop-blur-sm p-[8px] rounded-[8px]"
+          className="h-[36px] w-[36px] bg-[#F4F4FA4D] border-none backdrop-blur-sm p-[8px] rounded-[8px]"
         >
           <img src="/menu.png" className="h-5 w-5" />
         </Button>

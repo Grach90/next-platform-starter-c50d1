@@ -185,7 +185,7 @@ export function FilterSection() {
           {/* Color and Kind Filters */}
           <div className="mt-6 grid gap-6 md:grid-cols-2">
             <div>
-              <h3 className="mb-3 font-medium text-foreground">
+              <h3 className="font-[Montserrat-SemiBold] mb-3">
                 {t("filter.colors")}
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -210,7 +210,7 @@ export function FilterSection() {
             </div>
 
             <div>
-              <h3 className="mb-3 font-medium text-foreground">
+              <h3 className="mb-3 font-[Montserrat-SemiBold] text-foreground">
                 {t("filter.flower_types")}
               </h3>
               <div className="flex flex-wrap gap-2">

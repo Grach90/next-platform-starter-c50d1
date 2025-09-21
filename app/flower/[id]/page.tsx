@@ -181,29 +181,29 @@ export default function FlowerDetailPage() {
           {/* Details Section */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">
+              <h1 className="text-[24px] font-bold text-foreground pb-[16px]">
                 {flower.name}
               </h1>
-              <p className="text-2xl font-bold text-accent mt-2">
+              <p className="text-[18px] font-[Montserrat-Bold] text-[#EE5400]">
                 {selectedOption?.price} AED
               </p>
             </div>
 
             {/* Size Selector */}
             <div>
-              <label className="text-sm font-medium text-foreground mb-2 block">
+              <label className="text-[18px] font-[Montserrat-SemiBold] text-foreground mb-2 block">
                 {t("flower.size")}
               </label>
               <Select
                 value={selectedOption?.id || ""}
                 onValueChange={handleSizeChange}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full text-[18px]">
                   <SelectValue placeholder="Select size" />
                 </SelectTrigger>
                 <SelectContent>
                   {flower.flowerOptions.map((option, i) => (
-                    <SelectItem key={i} value={option.id}>
+                    <SelectItem key={i} value={option.id} className="text-[16px]">
                       {
                         BOUQUET_SIZE_NAMES[
                           option.size as keyof typeof BOUQUET_SIZE_NAMES
@@ -217,20 +217,20 @@ export default function FlowerDetailPage() {
 
             {/* Description */}
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">
+              <h3 className="text-[18px] font-[Montserrat-SemiBold] text-foreground pb-[8px]">
                 {t("flower.description")}
               </h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-[#000000CC] text-[14px] font-[Montserrat-Regular]  leading-relaxed">
                 {flower.description || "-"}
               </p>
             </div>
 
             {/* Bouquet Type */}
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">
+              <h3 className="text-[18px] font-[Montserrat-SemiBold] text-foreground pb-[8px]">
                 {t("flower.bouquet_type")}
               </h3>
-              <Badge variant="secondary" className="text-sm">
+              <Badge variant="secondary" className="bg-[#F2F2F2] text-[#000000] text-[14px] font-[Montserrat-Regular]">
                 {
                   BOUQUET_TYPE_NAMES[
                     flower.bouqetType as keyof typeof BOUQUET_TYPE_NAMES
@@ -241,12 +241,12 @@ export default function FlowerDetailPage() {
 
             {/* Colors */}
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">
+              <h3 className="text-[18px] font-[Montserrat-SemiBold] text-foreground pb-[8px]">
                 {t("flower.available_colors")}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {flower.flowerColors.map((color, i) => (
-                  <Badge key={i} variant="outline" className="text-sm">
+                  <Badge key={i} variant="outline" className="text-[14px] font-[Montserrat-Regular]">
                     {t(
                       `filter.clear.${
                         FLOWER_COLOR_NAMES[
@@ -261,12 +261,12 @@ export default function FlowerDetailPage() {
 
             {/* Flower Types */}
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">
+              <h3 className="text-[18px] font-[Montserrat-SemiBold] text-foreground pb-[8px]">
                 {t("flower.flower_types")}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {flower.flowerKinds.map((kind, i) => (
-                  <Badge key={i} variant="outline" className="text-sm">
+                  <Badge key={i} variant="outline" className="text-[14px] font-[Montserrat-Regular]">
                     {t(
                       `filter.kind.${
                         FLOWER_KIND_NAMES[
@@ -282,7 +282,7 @@ export default function FlowerDetailPage() {
             {/* Add to Basket Button */}
             <Button
               onClick={handleAddToBasket}
-              className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+              className="w-full bg-accent text-[18px] font-[Montserrat-Bold] hover:bg-accent/90"
               size="lg"
             >
               <ShoppingBag className="mr-2 h-5 w-5" />

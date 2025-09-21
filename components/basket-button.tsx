@@ -22,7 +22,7 @@ export function BasketButton() {
           className="fixed z-10 bottom-4 left-6 h-12 w-12 bg-transparent border-none md:top-25 md:right-12 md:left-auto"
           onClick={() => setOpen(true)}
         >
-          <img src="/shop.png" alt="shop" />
+          <img src="/shop.svg" alt="shop" />
           {basketCount > 0 && (
             <span className="absolute -right-2 -bottom-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#ff0000] text-xs font-bold text-white">
               {basketCount}

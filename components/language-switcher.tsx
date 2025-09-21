@@ -30,7 +30,7 @@ export function LanguageSwitcher() {
       <DropdownMenuTrigger asChild>
         <Button
           size="icon"
-          className="h-[48px] w-[48px] bg-[#F4F4FA4D] border-none backdrop-blur-sm p-[8px] rounded-[8px]"
+          className="h-[36px] w-[36px] bg-[#F4F4FA4D] border-none backdrop-blur-sm p-[8px] rounded-[8px]"
         >
           <img
             src={"/" + code + ".png"}

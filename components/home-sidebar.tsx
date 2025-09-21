@@ -19,7 +19,7 @@ export function HomeSidebar({ isOpen, onClose }: HomeSidebarProps) {
       )}
 
       <div
-        className={`fixed top-0 right-0 h-full w-40 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-40 md:w-[250px] bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -34,24 +34,24 @@ export function HomeSidebar({ isOpen, onClose }: HomeSidebarProps) {
           </Button>
         </div>
 
-        <div className="p-4 flex flex-col items-end [&_a]:pb-2 [&_a]:font-medium [&_a]:font-[MyFont]">
+        <div className="p-4 flex gap-[8px] flex-col items-end [&_a]:border-b [&_a]:w-[118px] md:[&_a]:w-[218px] [&_a]:h-[40px] [&_a]:pb-2 [&_a]:font-[18px] [&_a]:font-[Playfair-SemiBold]">
           <a href="/#filter" onClick={onClose}>
-            Search
+            SEARCH
           </a>
           <a href="/#groups" onClick={onClose}>
-            Order
+            ORDER
           </a>
           <a href="/#groups" onClick={onClose}>
-            Catalog
+            CATALOG
           </a>
           <a href="/#info" onClick={onClose}>
-            About Us
+            ABOUT US
           </a>
           <a href="/#info" onClick={onClose}>
-            Delivery
+            DELIVERY
           </a>
           <a href="/#info" onClick={onClose}>
-            Payment
+            PAYMENT
           </a>
         </div>
       </div>

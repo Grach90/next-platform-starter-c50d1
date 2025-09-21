@@ -118,9 +118,31 @@
   --font-body: "Avenir Next", "Open Sans", system-ui, sans-serif;
 }
 @font-face {
-  font-family: "MyFont";
-  src: url("/fonts/SerlioRegular.otf") format("opentype");
+  font-family: "Playfair-SemiBold";
+  src: url("/fonts/PlayfairDisplay-SemiBold.ttf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Montserrat-Regular";
+  src: url("/fonts/Montserrat-Medium.ttf") format("opentype");
   font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Montserrat-SemiBold";
+  src: url("/fonts/Montserrat-SemiBold.ttf") format("opentype");
+  font-weight: 600;
+  font-size: 14px;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Montserrat-Bold";
+  src: url("/fonts/Montserrat-Bold.ttf") format("opentype");
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -139,8 +161,11 @@
   h4,
   h5,
   h6 {
-    font-family: "MyFont", sans-serif;
+    font-family: "Playfair-SemiBold", sans-serif;
     /* font-family: var(--font-heading); */
     font-weight: 600;
+  }
+  p, span {
+    font-family: "Montserrat-Regular", sans-serif;
   }
 }

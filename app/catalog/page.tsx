@@ -183,7 +183,7 @@ function CatalogContent() {
       )}
 
       {/* Flowers Grid */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-[24px] py-8">
         {flowers.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground">{t("catalog.no_flowers")}</p>
@@ -194,13 +194,13 @@ function CatalogContent() {
         ) : (
           <>
             <section
-              className="grid gap-8 grid-cols-2 lg:grid-cols-3 "
+              className="grid gap-[16px] md:gap-8 grid-cols-2 lg:grid-cols-3 "
               id="catalog-section"
             >
               {flowers.map((flower) => (
                 <Card
                   key={flower.id}
-                  className="p-0 cursor-pointer overflow-hidden transition-transform rounded-none"
+                  className="p-0 cursor-pointer overflow-hidden transition-transform rounded-none gap-2 md:gap-3"
                   onClick={() => handleFlowerClick(flower)}
                 >
                   <div className="aspect-square overflow-hidden">
@@ -213,27 +213,25 @@ function CatalogContent() {
                       className="h-full w-full object-cover hover:scale-150"
                     />
                   </div>
-                  <CardContent className="pb-4 pt-0 pl-0 border-none">
-                    <div className="">
-                      <h3 className="font-semibold text-card-foreground truncate text-xs md:text-xl pb-2">
+                  <CardContent className="pt-0 pl-0 border-none flex flex-col gap-0 md:gap-[2px]">
+                      <h3 className="text-[18px] md:text-[20px] text-card-foreground truncate">
                         {flower.name}
                       </h3>
-                      <p className="font-bold text-[#ee5400] text-xs md:pb-2">
+                      <p className="text-[14px] md:text-[16px] text-[#ee5400]">
                         {findPriceInterval(flower.flowerOptions)}
                       </p>
-                    </div>
                     <div className="flex">
-                      <p className="text-xs md:text-xs :text-muted-foreground mt-1">
+                      <p className="font-[Montserrat-Regular] text-[#000000B2] text-[14px]" >
                         {t("flower.size")}:
                       </p>
-                      <div className="flex text-xs md:text-xs pl-5 text-muted-foreground mt-1">
+                      <div className="flex ml-3">
                         {flower.flowerOptions.map((option, i, arr) => (
-                          <p key={i}>
+                          <p key={i} className="font-[Montserrat-Bold] text-[#000000B2] ml-1 text-[14px]" >
                             {
                               BOUQUET_SIZE_NAMES[
                                 option.size as keyof typeof BOUQUET_SIZE_NAMES
                               ]
-                            }{" "}
+                            }
                             {i === arr.length - 1 ? "" : ", "}
                           </p>
                         ))}
