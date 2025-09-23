@@ -184,14 +184,14 @@ export default function FlowerDetailPage() {
               <h1 className="text-[24px] font-bold text-foreground pb-[16px]">
                 {flower.name}
               </h1>
-              <p className="text-[18px] font-[Montserrat-Bold] text-[#EE5400]">
+              <p className="text-[16px] font-[Montserrat-Bold] text-[#EE5400]">
                 {selectedOption?.price} AED
               </p>
             </div>
 
             {/* Size Selector */}
             <div>
-              <label className="text-[18px] font-[Montserrat-SemiBold] text-foreground mb-2 block">
+              <label className="text-[16px] font-[Montserrat-SemiBold] text-foreground mb-2 block">
                 {t("flower.size")}
               </label>
               <Select
@@ -217,7 +217,7 @@ export default function FlowerDetailPage() {
 
             {/* Description */}
             <div>
-              <h3 className="text-[18px] font-[Montserrat-SemiBold] text-foreground pb-[8px]">
+              <h3 className="text-[16px] font-[Montserrat-SemiBold] text-foreground pb-[8px]">
                 {t("flower.description")}
               </h3>
               <p className="text-[#000000CC] text-[14px] font-[Montserrat-Regular]  leading-relaxed">
@@ -227,7 +227,7 @@ export default function FlowerDetailPage() {
 
             {/* Bouquet Type */}
             <div>
-              <h3 className="text-[18px] font-[Montserrat-SemiBold] text-foreground pb-[8px]">
+              <h3 className="text-[16px] font-[Montserrat-SemiBold] text-foreground pb-[8px]">
                 {t("flower.bouquet_type")}
               </h3>
               <Badge variant="secondary" className="bg-[#F2F2F2] text-[#000000] text-[14px] font-[Montserrat-Regular]">
@@ -241,7 +241,7 @@ export default function FlowerDetailPage() {
 
             {/* Colors */}
             <div>
-              <h3 className="text-[18px] font-[Montserrat-SemiBold] text-foreground pb-[8px]">
+              <h3 className="text-[16px] font-[Montserrat-SemiBold] text-foreground pb-[8px]">
                 {t("flower.available_colors")}
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -261,7 +261,7 @@ export default function FlowerDetailPage() {
 
             {/* Flower Types */}
             <div>
-              <h3 className="text-[18px] font-[Montserrat-SemiBold] text-foreground pb-[8px]">
+              <h3 className="text-[16px] font-[Montserrat-SemiBold] text-foreground pb-[8px]">
                 {t("flower.flower_types")}
               </h3>
               <div className="flex flex-wrap gap-2">

@@ -85,7 +85,7 @@ export function FilterSection() {
   );
 
   return (
-    <section className="bg-muted py-16" id="filter">
+    <section className="bg-muted py-16 [&_*]:font-[Montserrat-SemiBold]" id="filter">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-foreground">
@@ -185,7 +185,7 @@ export function FilterSection() {
           {/* Color and Kind Filters */}
           <div className="mt-6 grid gap-6 md:grid-cols-2">
             <div>
-              <h3 className="font-[Montserrat-SemiBold] mb-3">
+              <h3 className="mb-3">
                 {t("filter.colors")}
               </h3>
               <div className="flex flex-wrap gap-2">

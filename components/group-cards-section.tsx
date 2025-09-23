@@ -124,7 +124,7 @@ export function GroupCardsSection() {
                   </h3>
                 </div>
                 {interval[group.name] && (
-                  <p className="absolute pt-1 font-[MyFont] md:hidden w-[200px] h-[30px] -bottom-[15px] -translate-y-1/2 left-1/2 -translate-x-1/2 bg-white text-center group-hover:block">
+                  <p className="absolute pt-1 font-[Playfair-Medium] md:hidden w-[200px] h-[30px] -bottom-[15px] -translate-y-1/2 left-1/2 -translate-x-1/2 bg-white text-center group-hover:block">
                     {`${t("groups.from")} ${interval[group.name]} aed`}
                   </p>
                 )}

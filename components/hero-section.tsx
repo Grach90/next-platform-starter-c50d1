@@ -38,7 +38,7 @@ export function HeroSection() {
       </div>
       <a
         href="#groups"
-        className="absolute z-50 bottom-30 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-transparent border-2 text-white text-center pt-6 hidden md:block cursor-pointer"
+        className="absolute font-[Montserrat-Regular] z-50 bottom-30 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-transparent border-2 text-white text-center pt-6 hidden md:block cursor-pointer"
       >
         {t("hero.choose")}
       </a>
@@ -61,7 +61,7 @@ export function HeroSection() {
         <div className="flex justify-between w-[inherit] mt-[12px]">
           <div className="flext justify-items-start">
             <Button
-              className="w-[155px] h-[44px] text-[20px] bg-[#FFFFFF66] pl-3 justify-start"
+              className="w-[155px] h-[44px] font-[Playfair-SemiBold] text-[20px] bg-[#FFFFFF66] pl-3 justify-start"
               onClick={() =>
                 window.open(`https://wa.me/${WHATSAPP_NUMBER.replace("+", "")}`)
               }
@@ -72,7 +72,7 @@ export function HeroSection() {
           </div>
           <div>
             <Button
-              className="w-[155px] h-[44px] text-[20px] bg-[#FFFFFF66] pl-3 justify-start"
+              className="w-[155px] h-[44px] text-[20px] font-[Playfair-SemiBold] bg-[#FFFFFF66] pl-3 justify-start"
               onClick={() =>
                 window.open(
                   `https://www.instagram.com/luxerosedubai?igsh=MXdsejJ3ZnpxZzA2Nw==`

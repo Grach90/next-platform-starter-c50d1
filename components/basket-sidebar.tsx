@@ -124,7 +124,7 @@ export function BasketSidebar() {
                         }
                       </p>
                       <p className="font-semibold text-sidebar-accent-foreground">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        AED {(item.price * item.quantity).toFixed(2)}
                       </p>
                     </div>
                     <div className="flex flex-col items-end gap-2">
@@ -180,7 +180,7 @@ export function BasketSidebar() {
               <div className="pt-4 space-y-4">
                 <div className="flex items-center justify-between text-lg font-semibold">
                   <span>{t("basket.total")}</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>AED {total.toFixed(2)}</span>
                 </div>
 
                 <div className="flex gap-2">
@@ -190,7 +190,7 @@ export function BasketSidebar() {
                       clearBasket();
                     }}
                     variant="outline"
-                    className="flex-1 border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent bg-transparent"
+                    className="flex-1 font-[Montserrat-Bold] border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent bg-transparent"
                   >
                     {t("basket.clear_all")}
                   </Button>
@@ -201,7 +201,7 @@ export function BasketSidebar() {
 
           <Button
             onClick={handleWhatsAppRedirect}
-            className="w-full bg-green-600 text-white hover:bg-green-700 mt-4"
+            className="w-full font-[Montserrat-Bold] bg-green-600 text-white hover:bg-green-700 mt-4"
           >
             <MessageCircle className="mr-2 h-4 w-4" />
             {t("basket.whatsapp")}
