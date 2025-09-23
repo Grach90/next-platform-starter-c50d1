@@ -286,7 +286,7 @@ export default function FlowerDetailPage() {
               size="lg"
             >
               <ShoppingBag className="mr-2 h-5 w-5" />
-              {t("flower.add_to_basket")} - ${selectedOption?.price}
+              {t("flower.add_to_basket")} - AED {selectedOption?.price}
             </Button>
           </div>
         </div>

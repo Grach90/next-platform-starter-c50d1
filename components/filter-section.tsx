@@ -88,10 +88,10 @@ export function FilterSection() {
     <section className="bg-muted py-16 [&_*]:font-[Montserrat-SemiBold]" id="filter">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-foreground">
+          <h2 className="text-2xl font-[Playfair-SemiBold]! text-foreground">
             {t("filter.title")}
           </h2>
-          <p className="mt-2 text-muted-foreground">{t("filter.subtitle")}</p>
+          <p className="mt-2 text-muted-foreground font-[Playfair-SemiBold]!">{t("filter.subtitle")}</p>
         </div>
 
         <div className="rounded-lg bg-card p-6 shadow-sm">

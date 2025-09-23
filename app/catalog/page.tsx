@@ -194,13 +194,13 @@ function CatalogContent() {
         ) : (
           <>
             <section
-              className="grid gap-[16px] md:gap-8 grid-cols-2 lg:grid-cols-3 "
+              className="grid gap-[16px] [&>*:nth-child(n+3)]:pt-[32px] md:gap-8 grid-cols-2 lg:grid-cols-3 "
               id="catalog-section"
             >
               {flowers.map((flower) => (
                 <Card
                   key={flower.id}
-                  className="p-0 cursor-pointer overflow-hidden transition-transform rounded-none gap-2 md:gap-3"
+                  className="p-0 md:pt-0! cursor-pointer overflow-hidden transition-transform rounded-none gap-2 md:gap-3"
                   onClick={() => handleFlowerClick(flower)}
                 >
                   <div className="aspect-square overflow-hidden">

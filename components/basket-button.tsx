@@ -19,7 +19,7 @@ export function BasketButton() {
         <Button
           variant="default"
           size="icon"
-          className="fixed z-10 bottom-4 left-6 h-12 w-12 bg-transparent border-none md:top-25 md:right-12 md:left-auto"
+          className="fixed z-10 bottom-4 left-6 h-12 w-12 md:w-[60px] md:h-[60px] bg-transparent border-none md:top-25 md:right-12 md:left-auto"
           onClick={() => setOpen(true)}
         >
           <img src="/shop.svg" alt="shop" />
