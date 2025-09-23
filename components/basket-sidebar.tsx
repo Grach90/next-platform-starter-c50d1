@@ -26,7 +26,6 @@ export function BasketSidebar() {
   const { t } = useLanguage();
   const total = getTotalPrice();
   const basketCount = getTotalItems();
-  console.log(state.items, "iteeem");
 
   const handleWhatsAppRedirect = () => {
     const message =
@@ -38,12 +37,12 @@ export function BasketSidebar() {
                   BOUQUET_SIZE_NAMES[
                     item.size as keyof typeof BOUQUET_SIZE_NAMES
                   ]
-                }, Qty: ${item.quantity}, Price: $${(
+                }, Qty: ${item.quantity}, Price: AED ${(
                   item.price * item.quantity
                 ).toFixed(2)}),
                 ${item.href}`
             )
-            .join("\n")}\n\nTotal: $${total.toFixed(2)}`
+            .join("\n")}\n\nTotal: AED ${total.toFixed(2)}`
         : "Hello! I'm interested in your flower arrangements.";
 
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(
