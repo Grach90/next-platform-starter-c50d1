@@ -33,7 +33,6 @@ export class ApiService {
   }
 
   static async getAllFlowerGroups(currentLanguage: string) {
-    console.log(currentLanguage, "currentLanguage");
 
     return this.request<IGroupCard[]>(
       `api/FlowerGroup/get-all-flower-groups?lang=${currentLanguage}`
