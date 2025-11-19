@@ -101,6 +101,8 @@ export interface IFilterParams {
   maxPrice?: number;
   colors?: number[];
   kinds?: number[];
+  page?: number;
+  perPage?: number;
 }
 
 export interface IPageImage {

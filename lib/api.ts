@@ -72,6 +72,12 @@ export class ApiService {
         searchParams.append("kinds", kind.toString())
       );
     }
+    if(params.page) {
+      searchParams.append("page", params.page.toString())
+    }
+    if(params.perPage) {
+       searchParams.append("pageSize", params.perPage.toString())
+    }
 
     return this.request<IFlower[]>(
       `api/Flower/filter?${searchParams.toString()}&lang=${currentLanguage}`

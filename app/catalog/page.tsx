@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,99 +15,119 @@ function CatalogContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { t, currentLanguage } = useLanguage();
+
   const [flowers, setFlowers] = useState<IFlower[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
   const [page, setPage] = useState(1);
+  const [perPage] = useState(9);
   const [hasMore, setHasMore] = useState(true);
+  const loadingRef = useRef(false);
+
+  const bottomRef = useRef<HTMLDivElement | null>(null);
 
   const groupId = searchParams.get("groupId");
   const isGroupCatalog = !!groupId;
 
+  const buildFilterParams = (): IFilterParams => {
+    const filters: IFilterParams = {
+      page,
+      perPage,
+    };
+
+    const flowerName = searchParams.get("flowerName");
+    const bouquetType = searchParams.get("bouqetType");
+    const size = searchParams.get("size");
+    const minPrice = searchParams.get("minPrice");
+    const maxPrice = searchParams.get("maxPrice");
+    const colors = searchParams.getAll("colors");
+    const kinds = searchParams.getAll("kinds");
+
+    if (flowerName) filters.flowerName = flowerName;
+    if (bouquetType) filters.bouqetType = Number(bouquetType);
+    if (size) filters.size = Number(size);
+    if (minPrice) filters.minPrice = Number(minPrice);
+    if (maxPrice) filters.maxPrice = Number(maxPrice);
+    if (colors.length) filters.colors = colors.map(Number);
+    if (kinds.length) filters.kinds = kinds.map(Number);
+
+    return filters;
+  };
+
   useEffect(() => {
-    loadFlowers();
+    const resetAndLoad = async () => {
+      setLoading(true);
+      setFlowers([]);
+      setPage(1);
+      setHasMore(true);
+      await loadFlowers(1, true);
+      setLoading(false);
+    };
+
+    resetAndLoad();
   }, [searchParams, currentLanguage]);
 
-  const loadFlowers = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  const loadFlowers = async (nextPage: number, replace = false) => {
+    
+    if (loadingRef.current) return;
+    loadingRef.current = true;
 
+    try {
       let result: IFlower[];
 
       if (isGroupCatalog && groupId) {
-        // Load flowers by group
         result = await ApiService.getFlowersByGroup(groupId, currentLanguage);
       } else {
-        // Load flowers by filter
-        const filters: IFilterParams = {};
-
-        const flowerName = searchParams.get("flowerName");
-        const bouqetType = searchParams.get("bouqetType");
-        const size = searchParams.get("size");
-        const minPrice = searchParams.get("minPrice");
-        const maxPrice = searchParams.get("maxPrice");
-        const colors = searchParams.getAll("colors");
-        const kinds = searchParams.getAll("kinds");
-
-        if (flowerName) filters.flowerName = flowerName;
-        if (bouqetType) filters.bouqetType = Number.parseInt(bouqetType);
-        if (size) filters.size = Number.parseInt(size);
-        if (minPrice) filters.minPrice = Number.parseFloat(minPrice);
-        if (maxPrice) filters.maxPrice = Number.parseFloat(maxPrice);
-        if (colors.length)
-          filters.colors = colors.map((c) => Number.parseInt(c));
-        if (kinds.length) filters.kinds = kinds.map((k) => Number.parseInt(k));
-
+        const filters = buildFilterParams();
+        filters.page = nextPage;
         result = await ApiService.filterFlowers(filters, currentLanguage);
-        setTimeout(() => {
-          const a = document.createElement("a");
-          a.href = "#catalog-section";
-          a.click();
-          // router.push("#catalog-section");
-        }, 200);
       }
 
-      setFlowers(result.slice(0, 10)); // Initial 10 items
-      setHasMore(result.length > 10);
-      setPage(1);
+      if (replace) {
+        setFlowers(result);
+      } else {
+        setFlowers((prev) => [...prev, ...result]);
+      }
+
+      setHasMore(result.length === perPage);
     } catch (err) {
-      setError("Failed to load flowers. Please try again.");
-      console.error("Error loading flowers:", err);
+      console.error(err);
+      setError("Failed to load flowers");
     } finally {
-      setLoading(false);
+      loadingRef.current = false;
     }
   };
+
+  useEffect(() => {
+    if (!bottomRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isVisible = entries[0].isIntersecting;
+        if (isVisible && hasMore && !loadingRef.current) {
+          const next = page + 1;
+          setPage(next);
+          loadFlowers(next);
+        }
+      },
+      { threshold: 1 }
+    );
+
+    observer.observe(bottomRef.current);
+    return () => observer.disconnect();
+  }, [bottomRef.current, hasMore, page]);
 
   const findPriceInterval = (flowerOptions: IFlowerOptions[]) => {
     if (flowerOptions.length === 1) {
       return `${flowerOptions[0].price} AED`;
     }
 
-    let minPrice = flowerOptions[0].price;
-    let maxPrice = flowerOptions[0].price;
+    const prices = flowerOptions.map((i) => i.price);
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
 
-    flowerOptions.forEach((i) => {
-      if (i.price < minPrice) minPrice = i.price;
-    });
-
-    flowerOptions.forEach((i) => {
-      if (i.price > maxPrice) maxPrice = i.price;
-    });
-
-    if (minPrice === maxPrice) {
-      return `${minPrice} AED`;
-    } else {
-      return `${minPrice} - ${maxPrice} AED`;
-    }
-  };
-
-  const loadMore = () => {
-    // TODO: Implement pagination with API
-    const nextPageItems = flowers.length + 10;
-    setPage((prev) => prev + 1);
-    // For now, just simulate loading more
-    setHasMore(false);
+    return min === max ? `${min} AED` : `${min} - ${max} AED`;
   };
 
   const handleFlowerClick = (flower: IFlower) => {
@@ -115,14 +135,10 @@ function CatalogContent() {
   };
 
   const handleBackClick = () => {
-    if (isGroupCatalog) {
-      router.push("/#groups");
-    } else {
-      router.push("/");
-    }
+    router.push(isGroupCatalog ? "/#groups" : "/");
   };
 
-  if (loading) {
+  if (loading && flowers.length === 0) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
@@ -130,50 +146,19 @@ function CatalogContent() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center">
-        <p className="text-destructive mb-4">{error}</p>
-        <Button onClick={loadFlowers}>Try Again</Button>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className=" bg-card">
+      <div className="bg-card">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className=" w-full">
-              <a
-                href="/"
-                className=" flex justify-center grow-1 cursor-pointer"
-              >
-                <img src="/logo-2.svg" alt="logo" className="w-20" />
-              </a>
-              <div className="flex">
-                <Button variant="ghost" size="sm" onClick={handleBackClick}>
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  {t("catalog.back")}
-                </Button>
-                {/* <div>
-                  <h1 className="text-md md:text-lg font-bold">
-                    {isGroupCatalog
-                      ? t("catalog.flower_collection")
-                      : t("catalog.search_results")}
-                  </h1>
-                  <p className="text-muted-foreground">
-                    {flowers.length} {t("catalog.flowers_found")}
-                  </p>
-                </div> */}
-              </div>
-            </div>
-          </div>
+          <Button variant="ghost" size="sm" onClick={handleBackClick}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {t("catalog.back")}
+          </Button>
         </div>
       </div>
 
-      {/* FilterSection */}
+      {/* Filters */}
       {!isGroupCatalog && (
         <div className="bg-card/50">
           <div className="container mx-auto px-4 py-4">
@@ -182,74 +167,63 @@ function CatalogContent() {
         </div>
       )}
 
-      {/* Flowers Grid */}
+      {/* Flowers */}
       <div className="container mx-auto px-[24px] py-8">
-        {flowers.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">{t("catalog.no_flowers")}</p>
-            <Button onClick={handleBackClick} className="mt-4">
-              {t("catalog.go_back")}
-            </Button>
-          </div>
-        ) : (
-          <>
-            <section
-              className="grid gap-[16px] [&>*:nth-child(n+3)]:pt-[32px] md:gap-8 grid-cols-2 lg:grid-cols-3 "
-              id="catalog-section"
+        <section
+          className="grid gap-[16px] [&>*:nth-child(n+3)]:pt-[32px] md:gap-8 grid-cols-2 lg:grid-cols-3"
+          id="catalog-section"
+        >
+          {flowers.map((flower) => (
+            <Card
+              key={flower.id}
+              className="cursor-pointer overflow-hidden rounded-none"
+              onClick={() => handleFlowerClick(flower)}
             >
-              {flowers.map((flower) => (
-                <Card
-                  key={flower.id}
-                  className="p-0 md:pt-0! cursor-pointer overflow-hidden transition-transform rounded-none gap-2 md:gap-3"
-                  onClick={() => handleFlowerClick(flower)}
-                >
-                  <div className="aspect-square overflow-hidden">
-                    <img
-                      src={
-                        flower.flowerOptions[0]?.imageLinks[0] ||
-                        "/placeholder.svg?height=300&width=300"
-                      }
-                      alt={flower.name}
-                      className="h-full w-full object-cover hover:scale-150"
-                    />
-                  </div>
-                  <CardContent className="pt-0 pl-0 border-none flex flex-col gap-0 md:gap-[2px]">
-                      <h3 className="text-[18px] md:text-[20px] text-card-foreground truncate">
-                        {flower.name}
-                      </h3>
-                      <p className="text-[14px] md:text-[16px] text-[#ee5400]">
-                        {findPriceInterval(flower.flowerOptions)}
-                      </p>
-                    <div className="flex">
-                      <p className="font-[Montserrat-Regular] text-[#000000B2] text-[14px]" >
-                        {t("flower.size")}:
-                      </p>
-                      <div className="flex ml-3">
-                        {flower.flowerOptions.map((option, i, arr) => (
-                          <p key={i} className="font-[Montserrat-Bold] text-[#000000B2] ml-1 text-[14px]" >
-                            {
-                              BOUQUET_SIZE_NAMES[
-                                option.size as keyof typeof BOUQUET_SIZE_NAMES
-                              ]
-                            }
-                            {i === arr.length - 1 ? "" : ", "}
-                          </p>
-                        ))}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </section>
-
-            {hasMore && (
-              <div className="text-center mt-8">
-                <Button onClick={loadMore} variant="outline">
-                  {t("catalog.load_more")}
-                </Button>
+              <div className="aspect-square overflow-hidden">
+                <img
+                  src={
+                    flower.flowerOptions[0]?.imageLinks[0] ||
+                    "/placeholder.svg"
+                  }
+                  className="h-full w-full object-cover hover:scale-150"
+                />
               </div>
-            )}
-          </>
+
+              <CardContent className="pt-0 pl-0">
+                <h3 className="text-[18px] md:text-[20px] truncate">
+                  {flower.name}
+                </h3>
+
+                <p className="text-[14px] md:text-[16px] text-[#ee5400]">
+                  {findPriceInterval(flower.flowerOptions)}
+                </p>
+
+                <div className="flex text-[14px]">
+                  <span>{t("flower.size")}:</span>
+                  <span className="ml-2 font-bold">
+                    {flower.flowerOptions
+                      .map(
+                        (o) =>
+                          BOUQUET_SIZE_NAMES[
+                            o.size as keyof typeof BOUQUET_SIZE_NAMES
+                          ]
+                      )
+                      .join(", ")}
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </section>
+
+        {/* Infinite scroll trigger */}
+        {hasMore && (
+          <div
+            ref={bottomRef}
+            className="flex justify-center py-8"
+          >
+            <Loader2 className="h-6 w-6 animate-spin" />
+          </div>
         )}
       </div>
     </div>
