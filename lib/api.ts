@@ -39,9 +39,18 @@ export class ApiService {
     );
   }
 
-  static async getFlowersByGroup(groupId: string, currentLanguage: string) {
+  static async getFlowersByGroup(params: IFilterParams, groupId: string, currentLanguage: string) {
+    const searchParams = new URLSearchParams();
+
+    if(params.page) {
+      searchParams.append("page", params.page.toString())
+    }
+    if(params.perPage) {
+       searchParams.append("pageSize", params.perPage.toString())
+    }
+
     return this.request<IFlower[]>(
-      `api/FlowerGroup/get-flowers-by-flower-group/${groupId}?${currentLanguage}`
+      `api/FlowerGroup/get-flowers-by-flower-group/${groupId}?${searchParams.toString()}&${currentLanguage}`
     );
   }
   static async getFlowerById(groupId: string, currentLanguage: string) {

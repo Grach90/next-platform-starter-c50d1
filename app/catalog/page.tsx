@@ -77,7 +77,9 @@ function CatalogContent() {
       let result: IFlower[];
 
       if (isGroupCatalog && groupId) {
-        result = await ApiService.getFlowersByGroup(groupId, currentLanguage);
+        const filters = buildFilterParams();
+        filters.page = nextPage;
+        result = await ApiService.getFlowersByGroup(filters, groupId, currentLanguage);
       } else {
         const filters = buildFilterParams();
         filters.page = nextPage;
